@@ -82,13 +82,20 @@ public class QuestionService {
 
     @Transactional(readOnly = true)
     public QuestionDto convertToDto(Question question, boolean includeCorrectAnswers) {
+        return convertToDto(question, includeCorrectAnswers, "es");
+    }
+
+    @Transactional(readOnly = true)
+    public QuestionDto convertToDto(Question question, boolean includeCorrectAnswers, String lang) {
         QuestionDto dto = new QuestionDto();
         dto.setId(question.getId());
         dto.setDomain(question.getDomain());
         dto.setDifficulty(question.getDifficulty());
         dto.setQtype(question.getQtype());
-        dto.setStem(question.getStem());
-        dto.setExplanation(question.getExplanation());
+
+        // Use bilingual columns if available, fallback to original
+        dto.setStem(getLocalizedText(question.getStemEs(), question.getStemEn(), question.getStem(), lang));
+        dto.setExplanation(getLocalizedText(question.getExplanationEs(), question.getExplanationEn(), question.getExplanation(), lang));
 
         // Parse tags
         if (question.getTagsJson() != null) {
@@ -102,12 +109,13 @@ public class QuestionService {
         }
 
         // Convert options
+        final String finalLang = lang;
         List<OptionDto> optionDtos = question.getOptions().stream()
                 .map(option -> {
                     OptionDto optionDto = new OptionDto();
                     optionDto.setId(option.getId());
                     optionDto.setLabel(option.getLabel());
-                    optionDto.setText(option.getText());
+                    optionDto.setText(getLocalizedText(option.getTextEs(), option.getTextEn(), option.getText(), finalLang));
                     if (includeCorrectAnswers) {
                         optionDto.setIsCorrect(option.getIsCorrect());
                     }
@@ -117,6 +125,14 @@ public class QuestionService {
         dto.setOptions(optionDtos);
 
         return dto;
+    }
+
+    private String getLocalizedText(String textEs, String textEn, String fallback, String lang) {
+        if ("en".equalsIgnoreCase(lang)) {
+            return (textEn != null && !textEn.isEmpty()) ? textEn : fallback;
+        } else {
+            return (textEs != null && !textEs.isEmpty()) ? textEs : fallback;
+        }
     }
 
     @Transactional(readOnly = true)

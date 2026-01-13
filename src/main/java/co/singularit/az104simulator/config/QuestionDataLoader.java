@@ -53,8 +53,16 @@ public class QuestionDataLoader implements CommandLineRunner {
             question.setDomain(Domain.valueOf((String) questionData.get("domain")));
             question.setDifficulty(Difficulty.valueOf((String) questionData.get("difficulty")));
             question.setQtype(QuestionType.valueOf((String) questionData.get("qtype")));
-            question.setStem((String) questionData.get("stem"));
-            question.setExplanation((String) questionData.get("explanation"));
+
+            String stem = (String) questionData.get("stem");
+            String explanation = (String) questionData.get("explanation");
+            question.setStem(stem);
+            question.setExplanation(explanation);
+            // Populate bilingual columns (initially duplicate)
+            question.setStemEs(stem);
+            question.setStemEn(stem);
+            question.setExplanationEs(explanation);
+            question.setExplanationEn(explanation);
 
             @SuppressWarnings("unchecked")
             List<String> tags = (List<String>) questionData.get("tags");
@@ -66,7 +74,11 @@ public class QuestionDataLoader implements CommandLineRunner {
             for (Map<String, Object> optionData : optionsData) {
                 OptionItem option = new OptionItem();
                 option.setLabel((String) optionData.get("label"));
-                option.setText((String) optionData.get("text"));
+                String text = (String) optionData.get("text");
+                option.setText(text);
+                // Populate bilingual columns
+                option.setTextEs(text);
+                option.setTextEn(text);
                 option.setIsCorrect((Boolean) optionData.get("isCorrect"));
                 question.addOption(option);
             }

@@ -401,10 +401,36 @@ body {
     transition: all 0.2s ease;
 }
 
+/* Question states - these apply to all questions */
+.question-number.q-answered .question-btn {
+    background: #d4edda;
+    border-color: #28a745;
+    color: #155724;
+}
+
+.question-number.q-marked .question-btn {
+    background: #fff3cd;
+    border-color: #ffc107;
+    color: #856404;
+}
+
+.question-number.q-answered.q-marked .question-btn {
+    background: #d4edda;
+    border: 3px solid #ffc107;
+    color: #155724;
+}
+
+.question-number.q-unanswered .question-btn {
+    background: white;
+    border-color: #e0e0e0;
+    color: #333;
+}
+
+/* Current question - use outline/box-shadow instead of background */
 .question-number.current .question-btn {
-    background: #0078d4;
-    color: white;
-    border-color: #0078d4;
+    outline: 3px solid #0078d4;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px white, 0 0 0 5px #0078d4;
 }
 
 .question-btn:hover {
@@ -920,6 +946,80 @@ body {
 .results-actions {
     text-align: center;
     margin-top: 40px;
+}
+
+/* Language Selector */
+.lang-selector {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.lang-selector select {
+    padding: 8px 12px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.lang-selector select option {
+    background: #0078d4;
+    color: white;
+}
+
+/* Review Filters */
+.review-filters {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.filter-btn {
+    padding: 8px 20px;
+    border: 2px solid #e0e0e0;
+    background: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.filter-btn.active {
+    background: #0078d4;
+    color: white;
+    border-color: #0078d4;
+}
+
+.filter-btn:hover {
+    border-color: #0078d4;
+}
+
+/* Question state badges in review */
+.status-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.85em;
+    font-weight: 600;
+}
+
+.status-badge.answered {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-badge.unanswered {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.status-badge.marked {
+    background: #fff3cd;
+    color: #856404;
 }
 
 /* Footer */

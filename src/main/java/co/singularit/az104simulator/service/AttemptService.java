@@ -95,6 +95,11 @@ public class AttemptService {
 
     @Transactional(readOnly = true)
     public QuestionDto getQuestionForAttempt(String attemptId, int index, ExamMode mode) {
+        return getQuestionForAttempt(attemptId, index, mode, "es");
+    }
+
+    @Transactional(readOnly = true)
+    public QuestionDto getQuestionForAttempt(String attemptId, int index, ExamMode mode, String lang) {
         Attempt attempt = getAttempt(attemptId);
         List<AttemptAnswer> answers = attempt.getAnswers();
 
@@ -111,7 +116,7 @@ public class AttemptService {
                 .orElseThrow(() -> new IllegalArgumentException("Question not found: " + questionId));
 
         boolean includeCorrectAnswers = (mode == ExamMode.PRACTICE);
-        QuestionDto dto = questionService.convertToDto(question, includeCorrectAnswers);
+        QuestionDto dto = questionService.convertToDto(question, includeCorrectAnswers, lang);
 
         // Add user's previous selection
         if (answer.getSelectedOptionIdsJson() != null && !answer.getSelectedOptionIdsJson().isEmpty()) {
@@ -186,6 +191,29 @@ public class AttemptService {
         status.put("currentIndex", attempt.getCurrentQuestionIndex());
 
         return status;
+    }
+
+    @Transactional(readOnly = true)
+    public List<String> getQuestionStates(String attemptId) {
+        Attempt attempt = getAttempt(attemptId);
+        List<AttemptAnswer> answers = attempt.getAnswers();
+
+        return answers.stream()
+                .map(answer -> {
+                    boolean isAnswered = answer.getSelectedOptionIdsJson() != null && !answer.getSelectedOptionIdsJson().isEmpty();
+                    boolean isMarked = answer.getMarked() != null && answer.getMarked();
+
+                    if (isAnswered && isMarked) {
+                        return "q-answered q-marked";
+                    } else if (isAnswered) {
+                        return "q-answered";
+                    } else if (isMarked) {
+                        return "q-marked";
+                    } else {
+                        return "q-unanswered";
+                    }
+                })
+                .collect(Collectors.toList());
     }
 
     @Transactional

@@ -1,33 +1,41 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AZ-104 Exam Simulator</title>
+    <title th:text="#{app.title}">AZ-104 Exam Simulator</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
     <div class="container">
-        <header class="header">
-            <h1>AZ-104 Microsoft Azure Administrator</h1>
-            <h2>Exam Simulator</h2>
+        <header class="header" style="position: relative;">
+            <div>
+                <h1 th:text="#{app.subtitle}">AZ-104 Microsoft Azure Administrator</h1>
+                <h2 th:text="#{app.title}">Exam Simulator</h2>
+            </div>
+            <div class="lang-selector" style="position: absolute; top: 20px; right: 20px;">
+                <select onchange="window.location.href='/?lang='+this.value">
+                    <option value="es" th:selected="${#locale.language == 'es'}">🇪🇸 Español</option>
+                    <option value="en" th:selected="${#locale.language == 'en'}">🇬🇧 English</option>
+                </select>
+            </div>
         </header>
 
         <main class="main-content">
             <div class="welcome-section">
-                <h3>Welcome to the AZ-104 Exam Simulator</h3>
-                <p>This simulator helps you prepare for the Microsoft Azure Administrator certification exam.</p>
+                <h3 th:text="#{home.welcome}">Welcome to the AZ-104 Exam Simulator</h3>
+                <p th:text="#{home.description}">This simulator helps you prepare for the Microsoft Azure Administrator certification exam.</p>
 
                 <div class="stats-box">
                     <div class="stat-item">
-                        <span class="stat-label">Total Questions:</span>
+                        <span class="stat-label" th:text="#{home.total.questions} + ':'">Total Questions:</span>
                         <span class="stat-value" th:text="${totalQuestions}">0</span>
                     </div>
                     <div class="stat-breakdown">
-                        <h4>Questions by Domain:</h4>
+                        <h4 th:text="#{home.questions.by.domain} + ':'">Questions by Domain:</h4>
                         <ul>
                             <li th:each="entry : ${countsByDomain}">
-                                <span th:text="${entry.key.displayName}">Domain</span>:
+                                <span th:text="#{|domain.${entry.key}|}">Domain</span>:
                                 <strong th:text="${entry.value}">0</strong>
                             </li>
                         </ul>
@@ -36,34 +44,34 @@
 
                 <div class="mode-selection">
                     <div class="mode-card">
-                        <h3>Practice Mode</h3>
-                        <p>Study at your own pace with immediate feedback and explanations.</p>
+                        <h3 th:text="#{home.practice.title}">Practice Mode</h3>
+                        <p th:text="#{home.practice.desc}">Study at your own pace with immediate feedback and explanations.</p>
                         <ul>
-                            <li>See explanations immediately</li>
-                            <li>No time limit</li>
-                            <li>Select specific domains</li>
-                            <li>Change answers</li>
+                            <li th:text="#{home.practice.feature1}">See explanations immediately</li>
+                            <li th:text="#{home.practice.feature2}">No time limit</li>
+                            <li th:text="#{home.practice.feature3}">Select specific domains</li>
+                            <li th:text="#{home.practice.feature4}">Change answers</li>
                         </ul>
-                        <a th:href="@{/config?mode=PRACTICE}" class="btn btn-primary">Start Practice</a>
+                        <a th:href="@{/config?mode=PRACTICE}" class="btn btn-primary" th:text="#{home.practice.button}">Start Practice</a>
                     </div>
 
                     <div class="mode-card">
-                        <h3>Exam Mode</h3>
-                        <p>Simulate the real exam experience with time limits and no feedback until the end.</p>
+                        <h3 th:text="#{home.exam.title}">Exam Mode</h3>
+                        <p th:text="#{home.exam.desc}">Simulate the real exam experience with time limits and no feedback until the end.</p>
                         <ul>
-                            <li>Timed exam (configurable)</li>
-                            <li>Mark questions for review</li>
-                            <li>No explanations until completion</li>
-                            <li>Realistic exam interface</li>
+                            <li th:text="#{home.exam.feature1}">Timed exam (configurable)</li>
+                            <li th:text="#{home.exam.feature2}">Mark questions for review</li>
+                            <li th:text="#{home.exam.feature3}">No explanations until completion</li>
+                            <li th:text="#{home.exam.feature4}">Realistic exam interface</li>
                         </ul>
-                        <a th:href="@{/config?mode=EXAM}" class="btn btn-danger">Start Exam</a>
+                        <a th:href="@{/config?mode=EXAM}" class="btn btn-danger" th:text="#{home.exam.button}">Start Exam</a>
                     </div>
                 </div>
             </div>
         </main>
 
         <footer class="footer">
-            <p>&copy; 2024 AZ-104 Simulator | For educational purposes only</p>
+            <p th:text="'&copy; 2024 ' + #{app.footer}">&copy; 2024 AZ-104 Simulator | For educational purposes only</p>
         </footer>
     </div>
 </body>

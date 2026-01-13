@@ -35,6 +35,18 @@ public class Question {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String explanation;
 
+    @Column(name = "stem_es", columnDefinition = "TEXT")
+    private String stemEs;
+
+    @Column(name = "stem_en", columnDefinition = "TEXT")
+    private String stemEn;
+
+    @Column(name = "explanation_es", columnDefinition = "TEXT")
+    private String explanationEs;
+
+    @Column(name = "explanation_en", columnDefinition = "TEXT")
+    private String explanationEn;
+
     @Column(name = "tags_json", columnDefinition = "TEXT")
     private String tagsJson;
 

@@ -26,6 +26,12 @@ public class OptionItem {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String text;
 
+    @Column(name = "text_es", columnDefinition = "TEXT")
+    private String textEs;
+
+    @Column(name = "text_en", columnDefinition = "TEXT")
+    private String textEn;
+
     @Column(name = "is_correct", nullable = false)
     private Boolean isCorrect;
 }

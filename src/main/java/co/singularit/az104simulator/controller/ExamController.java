@@ -7,11 +7,13 @@ import co.singularit.az104simulator.dto.*;
 import co.singularit.az104simulator.service.AttemptService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @Controller
@@ -52,14 +54,20 @@ public class ExamController {
             return "redirect:/attempt/" + attemptId + "/question/0";
         }
 
-        QuestionDto question = attemptService.getQuestionForAttempt(attemptId, index, attempt.getMode());
+        // Get current locale for i18n
+        Locale locale = LocaleContextHolder.getLocale();
+        String lang = locale.getLanguage();
+
+        QuestionDto question = attemptService.getQuestionForAttempt(attemptId, index, attempt.getMode(), lang);
         Map<String, Object> status = attemptService.getAttemptStatus(attemptId);
+        List<String> questionStates = attemptService.getQuestionStates(attemptId);
 
         model.addAttribute("attempt", attempt);
         model.addAttribute("question", question);
         model.addAttribute("currentIndex", index);
         model.addAttribute("status", status);
         model.addAttribute("config", config);
+        model.addAttribute("questionStates", questionStates);
 
         return "exam";
     }
