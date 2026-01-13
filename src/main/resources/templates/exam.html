@@ -47,9 +47,9 @@
                 </div>
 
                 <div class="sidebar-actions">
-                    <a th:href="@{/attempt/{id}/review(id=${attempt.id})}" class="btn btn-secondary">
-                        Review All
-                    </a>
+                    <button type="button" class="btn btn-secondary" onclick="submitExam()">
+                        <span th:text="#{exam.review.all}">Review All</span>
+                    </button>
                 </div>
 
                 <div class="legend">
@@ -147,10 +147,33 @@
         const attemptId = /*[[${attempt.id}]]*/ '';
         const questionId = /*[[${question.id}]]*/ 0;
         const currentIndex = /*[[${currentIndex}]]*/ 0;
-        const isMarked = /*[[${question.marked}]]*/ false;
+        let isMarked = /*[[${question.marked}]]*/ false;
         const timeLimitSeconds = /*[[${config.timeLimitMinutes != null ? config.timeLimitMinutes * 60 : 0}]]*/ 0;
 
         let timerInterval;
+        let isSaving = false;
+
+        // Language change function - preserves current URL and adds/updates lang parameter
+        function changeLang(lang) {
+            const url = new URL(window.location.href);
+            url.searchParams.set('lang', lang);
+            window.location.href = url.toString();
+        }
+
+        // Disable/enable navigation buttons
+        function setButtonsEnabled(enabled) {
+            const buttons = document.querySelectorAll('.btn, .question-btn');
+            buttons.forEach(btn => {
+                btn.disabled = !enabled;
+                if (!enabled) {
+                    btn.style.opacity = '0.5';
+                    btn.style.cursor = 'not-allowed';
+                } else {
+                    btn.style.opacity = '1';
+                    btn.style.cursor = 'pointer';
+                }
+            });
+        }
 
         // Initialize timer
         if (timeLimitSeconds > 0) {
@@ -184,56 +207,7 @@
             saveAnswer();
         });
 
-        function saveAnswer() {
-            const form = document.getElementById('answer-form');
-            const questionType = document.getElementById('questionType').value;
-            let selectedOptionIds = [];
-
-            if (questionType === 'SINGLE' || questionType === 'YESNO') {
-                const selected = form.querySelector('input[name="selectedOption"]:checked');
-                if (selected) {
-                    selectedOptionIds = [parseInt(selected.value)];
-                }
-            } else if (questionType === 'MULTI') {
-                const selected = form.querySelectorAll('input[name="selectedOptions"]:checked');
-                selectedOptionIds = Array.from(selected).map(el => parseInt(el.value));
-            }
-
-            const data = {
-                questionId: questionId,
-                selectedOptionIds: selectedOptionIds,
-                marked: isMarked
-            };
-
-            fetch(`/attempt/${attemptId}/answer`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
-        }
-
-        function toggleMark() {
-            const newMarkedState = !isMarked;
-
-            const data = {
-                questionId: questionId,
-                selectedOptionIds: getSelectedOptions(),
-                marked: newMarkedState
-            };
-
-            fetch(`/attempt/${attemptId}/answer`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            }).then(() => {
-                location.reload();
-            });
-        }
-
+        // Get currently selected options
         function getSelectedOptions() {
             const form = document.getElementById('answer-form');
             const questionType = document.getElementById('questionType').value;
@@ -252,23 +226,113 @@
             return selectedOptionIds;
         }
 
-        function navigateToQuestion(index) {
-            saveAnswer();
+        // Save current answer (returns Promise)
+        function saveAnswer() {
+            if (isSaving) {
+                return Promise.resolve();
+            }
+
+            const selectedOptionIds = getSelectedOptions();
+            const data = {
+                questionId: questionId,
+                selectedOptionIds: selectedOptionIds,
+                marked: isMarked
+            };
+
+            isSaving = true;
+
+            return fetch(`/attempt/${attemptId}/answer`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to save answer');
+                }
+                return response.json();
+            })
+            .catch(error => {
+                console.error('Error saving answer:', error);
+                throw error;
+            })
+            .finally(() => {
+                isSaving = false;
+            });
+        }
+
+        // Save and navigate to URL
+        async function saveAndGo(url) {
+            try {
+                setButtonsEnabled(false);
+                await saveAnswer();
+                window.location.href = url;
+            } catch (error) {
+                setButtonsEnabled(true);
+                console.error('Navigation cancelled due to save error');
+                alert('Error al guardar. Por favor intente nuevamente.');
+            }
+        }
+
+        // Toggle mark status
+        async function toggleMark() {
+            const newMarkedState = !isMarked;
+            isMarked = newMarkedState;
+
+            const selectedOptionIds = getSelectedOptions();
+            const data = {
+                questionId: questionId,
+                selectedOptionIds: selectedOptionIds,
+                marked: newMarkedState
+            };
+
+            try {
+                setButtonsEnabled(false);
+                isSaving = true;
+
+                const response = await fetch(`/attempt/${attemptId}/answer`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to update mark status');
+                }
+
+                location.reload();
+            } catch (error) {
+                console.error('Error toggling mark:', error);
+                alert('Error al marcar/desmarcar. Por favor intente nuevamente.');
+                isMarked = !newMarkedState; // Revert
+                setButtonsEnabled(true);
+            } finally {
+                isSaving = false;
+            }
+        }
+
+        // Navigate to specific question index
+        async function navigateToQuestion(index) {
             const url = new URL(window.location.origin + `/attempt/${attemptId}/question/${index}`);
             const lang = new URLSearchParams(window.location.search).get('lang');
             if (lang) {
                 url.searchParams.set('lang', lang);
             }
-            window.location.href = url.toString();
+            await saveAndGo(url.toString());
         }
 
-        function submitExam() {
+        // Go to review page
+        async function submitExam() {
             const url = new URL(window.location.origin + `/attempt/${attemptId}/review`);
             const lang = new URLSearchParams(window.location.search).get('lang');
             if (lang) {
                 url.searchParams.set('lang', lang);
             }
-            window.location.href = url.toString();
+            await saveAndGo(url.toString());
         }
     </script>
 </body>

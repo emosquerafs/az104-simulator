@@ -29,9 +29,23 @@ spring:
     cache: false
     prefix: classpath:/templates/
     suffix: .html
+    encoding: UTF-8
+    mode: HTML
+
+  messages:
+    encoding: UTF-8
+    basename: messages
+    cache-duration: 3600
 
 server:
   port: 8080
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+      force-request: true
+      force-response: true
 
 logging:
   level:

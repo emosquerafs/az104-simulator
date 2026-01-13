@@ -78,6 +78,13 @@ public class ExamController {
             @PathVariable String attemptId,
             @RequestBody AnswerSubmissionDto submission) {
 
+        log.info("ANSWER SUBMITTED - attemptId={}, questionId={}, selectedOptions={}, marked={}, timestamp={}",
+            attemptId,
+            submission.getQuestionId(),
+            submission.getSelectedOptionIds(),
+            submission.getMarked(),
+            java.time.LocalDateTime.now());
+
         attemptService.submitAnswer(attemptId, submission);
 
         return Map.of(
@@ -97,9 +104,17 @@ public class ExamController {
 
     @GetMapping("/{attemptId}/review")
     public String reviewAttempt(@PathVariable String attemptId, Model model) {
+        log.info("REVIEW PAGE ACCESSED - attemptId={}, timestamp={}",
+            attemptId, java.time.LocalDateTime.now());
+
         Attempt attempt = attemptService.getAttempt(attemptId);
         Map<String, Object> status = attemptService.getAttemptStatus(attemptId);
         List<Long> questionIds = attemptService.getQuestionIds(attemptId);
+
+        log.info("REVIEW STATUS - answered={}, unanswered={}, marked={}",
+            status.get("answeredCount"),
+            status.get("unansweredCount"),
+            status.get("markedCount"));
 
         model.addAttribute("attempt", attempt);
         model.addAttribute("status", status);
