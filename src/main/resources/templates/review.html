@@ -1,71 +1,88 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Review - AZ-104 Simulator</title>
+    <title th:text="#{review.title} + ' - ' + #{app.title}">Review - AZ-104 Simulator</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
     <div class="container">
-        <header class="header">
-            <h1>Review Your Answers</h1>
+        <header class="header" style="position: relative;">
+            <div>
+                <h1 th:text="#{review.title}">Review Your Answers</h1>
+            </div>
+            <div class="lang-selector" style="position: absolute; top: 20px; right: 20px;">
+                <select onchange="changeLang(this.value)">
+                    <option value="es" th:selected="${#locale.language == 'es'}">🇪🇸 Español</option>
+                    <option value="en" th:selected="${#locale.language == 'en'}">🇬🇧 English</option>
+                </select>
+            </div>
         </header>
 
         <main class="main-content">
             <div class="review-summary">
+                <h3 th:text="#{review.summary}">Summary</h3>
                 <div class="summary-box">
                     <div class="summary-item">
-                        <span class="summary-label">Total Questions:</span>
+                        <span class="summary-label" th:text="#{review.total} + ':'">Total Questions:</span>
                         <span class="summary-value" th:text="${status.totalQuestions}">0</span>
                     </div>
                     <div class="summary-item">
-                        <span class="summary-label">Answered:</span>
+                        <span class="summary-label" th:text="#{review.answered.count} + ':'">Answered:</span>
                         <span class="summary-value" th:text="${status.answeredCount}">0</span>
                     </div>
                     <div class="summary-item">
-                        <span class="summary-label">Not Answered:</span>
+                        <span class="summary-label" th:text="#{review.unanswered.count} + ':'">Not Answered:</span>
                         <span class="summary-value warning" th:text="${status.unansweredCount}">0</span>
                     </div>
                     <div class="summary-item">
-                        <span class="summary-label">Marked for Review:</span>
+                        <span class="summary-label" th:text="#{review.marked.count} + ':'">Marked for Review:</span>
                         <span class="summary-value" th:text="${status.markedCount}">0</span>
                     </div>
                 </div>
 
                 <div th:if="${status.unansweredCount > 0}" class="warning-message">
-                    <strong>Warning:</strong> You have <span th:text="${status.unansweredCount}">0</span>
-                    unanswered question(s). Are you sure you want to submit?
+                    <strong th:text="#{review.warning} + ':'">Warning:</strong>
+                    <span th:text="#{review.unanswered.warning(${status.unansweredCount})}">You have unanswered questions.</span>
                 </div>
             </div>
 
             <div class="review-actions">
-                <a th:href="@{/attempt/{id}/question/0(id=${attempt.id})}" class="btn btn-secondary">
+                <a th:href="@{/attempt/{id}/question/0(id=${attempt.id},lang=${#locale.language})}" class="btn btn-secondary" th:text="#{review.back}">
                     Back to Questions
                 </a>
 
                 <form th:action="@{/attempt/{id}/submit(id=${attempt.id})}" method="post" style="display: inline;"
-                      onsubmit="return confirm('Are you sure you want to submit? You cannot change answers after submission.');">
-                    <button type="submit" class="btn btn-primary btn-large">
+                      th:attr="onsubmit='return confirm(\'' + #{review.submit.confirm} + '\');'">
+                    <button type="submit" class="btn btn-primary btn-large" th:text="#{review.submit}">
                         Submit Exam
                     </button>
                 </form>
             </div>
 
             <div class="question-list">
-                <h3>All Questions</h3>
+                <h3 th:text="#{review.all.questions}">All Questions</h3>
                 <div class="question-grid-review">
                     <div th:each="i : ${#numbers.sequence(0, attempt.totalQuestions - 1)}"
                          class="question-review-item">
-                        <a th:href="@{/attempt/{id}/question/{index}(id=${attempt.id}, index=${i})}"
+                        <a th:href="@{/attempt/{id}/question/{index}(id=${attempt.id}, index=${i}, lang=${#locale.language})}"
                            class="question-review-link">
                             <span class="question-number-badge">[[${i + 1}]]</span>
-                            <span class="question-status-badge">Status</span>
+                            <span class="question-status-badge" th:text="#{review.status.answered}">Status</span>
                         </a>
                     </div>
                 </div>
             </div>
         </main>
     </div>
+
+    <script>
+        function changeLang(lang) {
+            const url = new URL(window.location.href);
+            url.searchParams.set('lang', lang);
+            window.location.href = url.toString();
+        }
+    </script>
 </body>
 </html>

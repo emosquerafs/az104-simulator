@@ -106,7 +106,7 @@
 
                 <div th:if="${attempt.mode.name() == 'PRACTICE' && config.showExplanationsImmediately && question.answered}"
                      class="explanation-box">
-                    <h4>Explanation:</h4>
+                    <h4 th:text="#{exam.explanation} + ':'">Explanation:</h4>
                     <p th:text="${question.explanation}">Explanation text</p>
                 </div>
 
@@ -115,7 +115,8 @@
                         <button th:if="${currentIndex > 0}"
                                 type="button"
                                 class="btn btn-secondary"
-                                th:onclick="'navigateToQuestion(' + ${currentIndex - 1} + ')'">
+                                th:onclick="'navigateToQuestion(' + ${currentIndex - 1} + ')'"
+                                th:text="#{exam.previous}">
                             Previous
                         </button>
                     </div>
@@ -124,7 +125,7 @@
                         <button type="button" id="markBtn" class="btn btn-warning"
                                 th:classappend="${question.marked} ? 'marked' : ''"
                                 onclick="toggleMark()">
-                            <span th:text="${question.marked ? 'Unmark' : 'Mark for Review'}">Mark</span>
+                            <span th:text="${question.marked ? #messages.msg('exam.unmark') : #messages.msg('exam.mark')}">Mark</span>
                         </button>
                     </div>
 
@@ -132,7 +133,8 @@
                         <button th:if="${currentIndex < attempt.totalQuestions - 1}"
                                 type="button"
                                 class="btn btn-primary"
-                                th:onclick="'navigateToQuestion(' + ${currentIndex + 1} + ')'">
+                                th:onclick="'navigateToQuestion(' + ${currentIndex + 1} + ')'"
+                                th:text="#{exam.next}">
                             Next
                         </button>
                     </div>
@@ -252,11 +254,21 @@
 
         function navigateToQuestion(index) {
             saveAnswer();
-            window.location.href = `/attempt/${attemptId}/question/${index}`;
+            const url = new URL(window.location.origin + `/attempt/${attemptId}/question/${index}`);
+            const lang = new URLSearchParams(window.location.search).get('lang');
+            if (lang) {
+                url.searchParams.set('lang', lang);
+            }
+            window.location.href = url.toString();
         }
 
         function submitExam() {
-            window.location.href = `/attempt/${attemptId}/review`;
+            const url = new URL(window.location.origin + `/attempt/${attemptId}/review`);
+            const lang = new URLSearchParams(window.location.search).get('lang');
+            if (lang) {
+                url.searchParams.set('lang', lang);
+            }
+            window.location.href = url.toString();
         }
     </script>
 </body>

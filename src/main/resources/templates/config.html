@@ -8,9 +8,17 @@
 </head>
 <body>
     <div class="container">
-        <header class="header">
-            <h1><span th:text="#{config.title}">Configure Your</span> <span th:text="#{|mode.${config.mode}|}">Exam</span></h1>
-            <a th:href="@{/}" class="btn-back" th:text="#{config.back}">Back to Home</a>
+        <header class="header" style="position: relative;">
+            <div>
+                <h1><span th:text="#{config.title}">Configure Your</span> <span th:text="#{|mode.${config.mode}|}">Exam</span></h1>
+                <a th:href="@{/(lang=${#locale.language})}" class="btn-back" th:text="#{config.back}">Back to Home</a>
+            </div>
+            <div class="lang-selector" style="position: absolute; top: 20px; right: 20px;">
+                <select onchange="changeLang(this.value)">
+                    <option value="es" th:selected="${#locale.language == 'es'}">🇪🇸 Español</option>
+                    <option value="en" th:selected="${#locale.language == 'en'}">🇬🇧 English</option>
+                </select>
+            </div>
         </header>
 
         <main class="main-content">
@@ -99,5 +107,13 @@
             </form>
         </main>
     </div>
+
+    <script>
+        function changeLang(lang) {
+            const url = new URL(window.location.href);
+            url.searchParams.set('lang', lang);
+            window.location.href = url.toString();
+        }
+    </script>
 </body>
 </html>

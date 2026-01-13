@@ -54,15 +54,40 @@ public class QuestionDataLoader implements CommandLineRunner {
             question.setDifficulty(Difficulty.valueOf((String) questionData.get("difficulty")));
             question.setQtype(QuestionType.valueOf((String) questionData.get("qtype")));
 
-            String stem = (String) questionData.get("stem");
-            String explanation = (String) questionData.get("explanation");
-            question.setStem(stem);
-            question.setExplanation(explanation);
-            // Populate bilingual columns (initially duplicate)
-            question.setStemEs(stem);
-            question.setStemEn(stem);
-            question.setExplanationEs(explanation);
-            question.setExplanationEn(explanation);
+            // Handle both monolingual and bilingual format
+            Object stemObj = questionData.get("stem");
+            Object explanationObj = questionData.get("explanation");
+
+            if (stemObj instanceof String) {
+                // Monolingual format (backward compatibility)
+                String stem = (String) stemObj;
+                String explanation = (String) explanationObj;
+                question.setStem(stem);
+                question.setExplanation(explanation);
+                question.setStemEs(stem);
+                question.setStemEn(stem);
+                question.setExplanationEs(explanation);
+                question.setExplanationEn(explanation);
+            } else {
+                // Bilingual format
+                @SuppressWarnings("unchecked")
+                Map<String, String> stemMap = (Map<String, String>) stemObj;
+                @SuppressWarnings("unchecked")
+                Map<String, String> explanationMap = (Map<String, String>) explanationObj;
+
+                String stemEs = stemMap.get("es");
+                String stemEn = stemMap.get("en");
+                String explanationEs = explanationMap.get("es");
+                String explanationEn = explanationMap.get("en");
+
+                // Use Spanish as default for legacy 'stem' column
+                question.setStem(stemEs != null ? stemEs : stemEn);
+                question.setExplanation(explanationEs != null ? explanationEs : explanationEn);
+                question.setStemEs(stemEs);
+                question.setStemEn(stemEn);
+                question.setExplanationEs(explanationEs);
+                question.setExplanationEn(explanationEn);
+            }
 
             @SuppressWarnings("unchecked")
             List<String> tags = (List<String>) questionData.get("tags");
@@ -74,11 +99,27 @@ public class QuestionDataLoader implements CommandLineRunner {
             for (Map<String, Object> optionData : optionsData) {
                 OptionItem option = new OptionItem();
                 option.setLabel((String) optionData.get("label"));
-                String text = (String) optionData.get("text");
-                option.setText(text);
-                // Populate bilingual columns
-                option.setTextEs(text);
-                option.setTextEn(text);
+
+                Object textObj = optionData.get("text");
+                if (textObj instanceof String) {
+                    // Monolingual format
+                    String text = (String) textObj;
+                    option.setText(text);
+                    option.setTextEs(text);
+                    option.setTextEn(text);
+                } else {
+                    // Bilingual format
+                    @SuppressWarnings("unchecked")
+                    Map<String, String> textMap = (Map<String, String>) textObj;
+                    String textEs = textMap.get("es");
+                    String textEn = textMap.get("en");
+
+                    // Use Spanish as default for legacy 'text' column
+                    option.setText(textEs != null ? textEs : textEn);
+                    option.setTextEs(textEs);
+                    option.setTextEn(textEn);
+                }
+
                 option.setIsCorrect((Boolean) optionData.get("isCorrect"));
                 question.addOption(option);
             }

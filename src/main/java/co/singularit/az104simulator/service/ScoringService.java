@@ -156,4 +156,12 @@ public class ScoringService {
 
         return result;
     }
+
+    private String getLocalizedText(String textEs, String textEn, String fallback, String lang) {
+        if ("en".equalsIgnoreCase(lang)) {
+            return (textEn != null && !textEn.isEmpty()) ? textEn : fallback;
+        } else {
+            return (textEs != null && !textEs.isEmpty()) ? textEs : fallback;
+        }
+    }
 }

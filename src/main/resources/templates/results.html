@@ -16,53 +16,53 @@
         <main class="main-content">
             <div class="results-summary">
                 <div class="score-box" th:classappend="${results.score >= 70} ? 'pass' : 'fail'">
-                    <h2>Your Score</h2>
+                    <h2 th:text="#{results.your.score}">Your Score</h2>
                     <div class="score-value">
                         <span th:text="${#numbers.formatDecimal(results.score, 0, 2)}">0</span>%
                     </div>
                     <div class="score-status">
-                        <span th:if="${results.score >= 70}" class="pass">PASS</span>
-                        <span th:if="${results.score < 70}" class="fail">FAIL</span>
-                        <p class="score-note">Passing score: 70%</p>
+                        <span th:if="${results.score >= 70}" class="pass" th:text="#{results.pass}">PASS</span>
+                        <span th:if="${results.score < 70}" class="fail" th:text="#{results.fail}">FAIL</span>
+                        <p class="score-note" th:text="#{results.passing.note}">Passing score: 70%</p>
                     </div>
                 </div>
 
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-label">Correct</div>
+                        <div class="stat-label" th:text="#{results.correct}">Correct</div>
                         <div class="stat-value correct" th:text="${results.correctAnswers}">0</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-label">Incorrect</div>
+                        <div class="stat-label" th:text="#{results.incorrect}">Incorrect</div>
                         <div class="stat-value incorrect" th:text="${results.incorrectAnswers}">0</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-label">Total</div>
+                        <div class="stat-label" th:text="#{results.total}">Total</div>
                         <div class="stat-value" th:text="${results.totalQuestions}">0</div>
                     </div>
                     <div class="stat-card" th:if="${results.durationSeconds != null}">
-                        <div class="stat-label">Time Spent</div>
+                        <div class="stat-label" th:text="#{results.time.spent}">Time Spent</div>
                         <div class="stat-value">
-                            [[${results.durationSeconds / 60}]] min
+                            [[${results.durationSeconds / 60}]] <span th:text="#{results.minutes}">min</span>
                         </div>
                     </div>
                     <div class="stat-card" th:if="${results.averageTimePerQuestion != null}">
-                        <div class="stat-label">Avg. Time/Question</div>
+                        <div class="stat-label" th:text="#{results.avg.time}">Avg. Time/Question</div>
                         <div class="stat-value">
-                            [[${#numbers.formatDecimal(results.averageTimePerQuestion, 0, 1)}]] sec
+                            [[${#numbers.formatDecimal(results.averageTimePerQuestion, 0, 1)}]] <span th:text="#{results.seconds}">sec</span>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="domain-breakdown">
-                <h3>Performance by Domain</h3>
+                <h3 th:text="#{results.performance.by.domain}">Performance by Domain</h3>
                 <div class="breakdown-grid">
                     <div th:each="entry : ${results.domainBreakdowns}"
                          th:if="${entry.value.total > 0}"
                          class="breakdown-item">
                         <div class="breakdown-header">
-                            <h4 th:text="${entry.key.displayName}">Domain</h4>
+                            <h4 th:text="#{|domain.${entry.key.name()}|}">Domain</h4>
                             <span class="breakdown-score"
                                   th:text="${entry.value.correct} + '/' + ${entry.value.total}">0/0</span>
                         </div>
@@ -80,13 +80,14 @@
             </div>
 
             <div class="detailed-results">
-                <h3>Detailed Question Review</h3>
+                <h3 th:text="#{results.detailed.review}">Detailed Question Review</h3>
                 <div class="questions-review">
                     <div th:each="qr, iterStat : ${results.questionResults}" class="question-result-item">
                         <div class="question-result-header">
-                            <span class="question-number">Question [[${iterStat.index + 1}]]</span>
+                            <span class="question-number"><span th:text="#{exam.question}">Question</span> [[${iterStat.index + 1}]]</span>
                             <span class="result-indicator"
-                                  th:classappend="${qr.isCorrect} ? 'correct' : 'incorrect'">
+                                  th:classappend="${qr.isCorrect} ? 'correct' : 'incorrect'"
+                                  th:text="${qr.isCorrect ? #messages.msg('results.correct.indicator') : #messages.msg('results.incorrect.indicator')}">
                                 [[${qr.isCorrect ? '✓ Correct' : '✗ Incorrect'}]]
                             </span>
                         </div>
@@ -99,14 +100,14 @@
                                      th:classappend="${opt.isCorrect ? 'correct-option' : ''} + ' ' + ${#lists.contains(qr.selectedOptionIds, opt.id) ? 'selected-option' : ''}">
                                     <span class="option-label" th:text="${opt.label}">A</span>
                                     <span class="option-text" th:text="${opt.text}">Option text</span>
-                                    <span th:if="${opt.isCorrect}" class="correct-mark">✓ Correct Answer</span>
+                                    <span th:if="${opt.isCorrect}" class="correct-mark" th:text="#{results.correct.answer}">✓ Correct Answer</span>
                                     <span th:if="${!opt.isCorrect && #lists.contains(qr.selectedOptionIds, opt.id)}"
-                                          class="incorrect-mark">✗ Your Answer</span>
+                                          class="incorrect-mark" th:text="#{results.your.answer}">✗ Your Answer</span>
                                 </div>
                             </div>
 
                             <div class="explanation-review">
-                                <h5>Explanation:</h5>
+                                <h5 th:text="#{exam.explanation} + ':'">Explanation:</h5>
                                 <p th:text="${qr.explanation}">Explanation text</p>
                             </div>
                         </div>
@@ -115,11 +116,19 @@
             </div>
 
             <div class="results-actions">
-                <a th:href="@{/}" class="btn btn-primary btn-large">
+                <a th:href="@{/(lang=${#locale.language})}" class="btn btn-primary btn-large" th:text="#{config.back}">
                     Return to Home
                 </a>
             </div>
         </main>
     </div>
+
+    <script>
+        function changeLang(lang) {
+            const url = new URL(window.location.href);
+            url.searchParams.set('lang', lang);
+            window.location.href = url.toString();
+        }
+    </script>
 </body>
 </html>
