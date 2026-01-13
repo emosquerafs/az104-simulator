@@ -1,0 +1,87 @@
+Necesito que generes un banco de preguntas para practicar AZ-104 (Microsoft Azure Administrator), pero con reglas estrictas.
+
+IMPORTANTE (cumplimiento):
+- NO uses “dumps”.
+- Las preguntas deben ser ORIGINALES, pero alineadas a los objetivos oficiales (skills measured) y documentación oficial de Microsoft Learn/Azure docs.
+- Deben parecer “de certificación”: escenarios realistas, opciones plausibles, distractores creíbles, explicaciones técnicas.
+
+OBJETIVO:
+Generar exactamente 100 preguntas del dominio: MONITOR_MAINTAIN - Monitor and maintain Azure resources
+Idioma: BILINGÜE (EN + ES) para stem, options y explanation.
+Formato: JSON puro (sin markdown), listo para guardar como archivo.
+
+
+DOMINIOS válidos (elige uno en {DOMAIN}):
+- IDENTITY_GOVERNANCE
+- STORAGE
+- COMPUTE
+- NETWORKING
+- MONITOR_MAINTAIN
+
+DISTRIBUCIÓN:
+- Dificultad: 25% EASY, 55% MEDIUM, 20% HARD (aproximado; ajusta si {N} no permite exacto).
+- Tipos de pregunta:
+  - 55% SINGLE (una correcta)
+  - 30% MULTI (2-3 correctas, selección múltiple)
+  - 15% YESNO (Sí/No)
+- Opciones:
+  - SINGLE/YESNO: 4 opciones (A-D) excepto YESNO que puede ser A-B (Yes/No) si el template lo permite.
+  - MULTI: 5-6 opciones (A-F) con 2-3 correctas.
+
+CONTENIDO (calidad):
+- Cada pregunta debe incluir:
+  - escenario breve (empresa, requerimiento, restricción)
+  - decisión técnica concreta (qué servicio/config/acción)
+  - opciones plausibles (evita opciones obvias “incorrectas”)
+  - explicación corta y técnica (EN y ES)
+  - tags relevantes (subtemas del dominio)
+- No uses nombres de clientes reales.
+- Evita números/licencias precios exactos que cambian; si usas cifras, que sean conceptuales.
+
+TEMPLATE JSON (OBLIGATORIO):
+Devuélveme un ARRAY JSON con objetos que cumplan EXACTAMENTE esta estructura y nombres de campos:
+[
+  {
+    "domain": "{DOMAIN}",
+    "difficulty": "EASY|MEDIUM|HARD",
+    "qtype": "SINGLE|MULTI|YESNO",
+    "stem": { "en": "...", "es": "..." },
+    "explanation": { "en": "...", "es": "..." },
+    "options": [
+      {
+        "label": "A",
+        "text": { "en": "...", "es": "..." },
+        "isCorrect": true
+      }
+    ],
+    "tags": ["tag1","tag2","tag3"]
+  }
+]
+
+REGLAS DE VALIDACIÓN (no falles esto):
+- SINGLE/YESNO: exactamente 1 opción con isCorrect=true.
+- MULTI: exactamente 2 o 3 opciones con isCorrect=true.
+- No dejes campos vacíos.
+- Mantén consistencia EN/ES (misma intención; traducción correcta).
+- Usa UTF-8 (acentos correctos en español).
+- tags en minúscula con guiones (ej: "rbac", "nsg-outbound", "storage-sas", "log-analytics").
+
+SUGERENCIA DE SUBTEMAS por dominio (usa para tags y variedad):
+IDENTITY_GOVERNANCE:
+  rbac, scope, management-groups, azure-policy, locks, tags, entra-users-groups, pim, conditional-access (conceptual)
+STORAGE:
+  storage-account, replication-lrs-zrs-grs, access-tiers, lifecycle-management, sas, storage-firewall, private-endpoint, service-endpoint, azure-files, blob-versioning
+COMPUTE:
+  vm-resize, vm-images, snapshots, managed-disks, availability-zones, availability-sets, vmss, app-service-basics, container-basics
+NETWORKING:
+  vnet-subnet, nsg, udr, peering, dns-private-zone, load-balancer, application-gateway (conceptual), vpn-gateway, expressroute (conceptual)
+MONITOR_MAINTAIN:
+  azure-monitor, metrics-logs, log-analytics, alerts-action-groups, diagnostic-settings, backup-basics, update-management (conceptual)
+
+SALIDA FINAL:
+- Entrega SOLO JSON válido (sin texto adicional).
+- Si detectas que no puedes generar {N} por límite de salida, entonces:
+  1) entrega JSON con 50 preguntas como muestra
+  2) y entrega un script local (Java/Kotlin o Python) que genere el resto hasta {N} siguiendo las mismas reglas y estructura.
+- No generes readme.md de la implementacion o proceso de generacion de las preguntas
+- El contenido que generes debe ser un archivo json descargable
