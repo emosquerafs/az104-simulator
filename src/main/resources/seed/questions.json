@@ -1,0 +1,1418 @@
+[
+  {
+    "domain": "IDENTITY_GOVERNANCE",
+    "difficulty": "EASY",
+    "qtype": "SINGLE",
+    "stem": "Which Azure service is used to manage user identities and access to resources?",
+    "explanation": "Microsoft Entra ID (formerly Azure Active Directory) is the cloud-based identity and access management service that helps users sign in and access resources.",
+    "options": [
+      {"label": "A", "text": "Azure Resource Manager", "isCorrect": false},
+      {"label": "B", "text": "Microsoft Entra ID", "isCorrect": true},
+      {"label": "C", "text": "Azure Policy", "isCorrect": false},
+      {"label": "D", "text": "Azure Key Vault", "isCorrect": false}
+    ],
+    "tags": ["entra-id", "identity", "basics"]
+  },
+  {
+    "domain": "IDENTITY_GOVERNANCE",
+    "difficulty": "MEDIUM",
+    "qtype": "SINGLE",
+    "stem": "You need to grant a user temporary elevated access to Azure resources for a specific time period. Which feature should you use?",
+    "explanation": "Privileged Identity Management (PIM) provides time-based and approval-based role activation to mitigate the risks of excessive, unnecessary, or misused access permissions.",
+    "options": [
+      {"label": "A", "text": "Azure RBAC permanent assignment", "isCorrect": false},
+      {"label": "B", "text": "Privileged Identity Management (PIM)", "isCorrect": true},
+      {"label": "C", "text": "Conditional Access policies", "isCorrect": false},
+      {"label": "D", "text": "Management groups", "isCorrect": false}
+    ],
+    "tags": ["pim", "rbac", "governance"]
+  },
+  {
+    "domain": "IDENTITY_GOVERNANCE",
+    "difficulty": "HARD",
+    "qtype": "MULTI",
+    "stem": "You are configuring Conditional Access policies for your organization. Which conditions can you evaluate? (Choose all that apply)",
+    "explanation": "Conditional Access can evaluate user/group membership, cloud apps, device state, location (IP range), and risk levels. It cannot directly evaluate resource tags.",
+    "options": [
+      {"label": "A", "text": "User or group membership", "isCorrect": true},
+      {"label": "B", "text": "Cloud apps or actions", "isCorrect": true},
+      {"label": "C", "text": "Device state and compliance", "isCorrect": true},
+      {"label": "D", "text": "Resource tags", "isCorrect": false}
+    ],
+    "tags": ["conditional-access", "security", "policies"]
+  },
+  {
+    "domain": "IDENTITY_GOVERNANCE",
+    "difficulty": "EASY",
+    "qtype": "YESNO",
+    "stem": "Can you assign Azure RBAC roles at the management group level?",
+    "explanation": "Yes, Azure RBAC roles can be assigned at management group, subscription, resource group, or individual resource levels. Management group assignments cascade down to all subscriptions beneath.",
+    "options": [
+      {"label": "A", "text": "Yes", "isCorrect": true},
+      {"label": "B", "text": "No", "isCorrect": false}
+    ],
+    "tags": ["rbac", "management-groups", "governance"]
+  },
+  {
+    "domain": "IDENTITY_GOVERNANCE",
+    "difficulty": "MEDIUM",
+    "qtype": "SINGLE",
+    "stem": "What is the maximum number of custom roles that can be created in an Azure AD tenant?",
+    "explanation": "Azure AD supports up to 5,000 custom role definitions per tenant. However, built-in roles don't count toward this limit.",
+    "options": [
+      {"label": "A", "text": "100", "isCorrect": false},
+      {"label": "B", "text": "500", "isCorrect": false},
+      {"label": "C", "text": "5,000", "isCorrect": true},
+      {"label": "D", "text": "Unlimited", "isCorrect": false}
+    ],
+    "tags": ["rbac", "custom-roles", "limits"]
+  },
+  {
+    "domain": "IDENTITY_GOVERNANCE",
+    "difficulty": "EASY",
+    "qtype": "SINGLE",
+    "stem": "Which built-in RBAC role provides full access to manage all Azure resources?",
+    "explanation": "The Owner role grants full access to all resources, including the ability to assign roles to others. It's the most privileged built-in role.",
+    "options": [
+      {"label": "A", "text": "Contributor", "isCorrect": false},
+      {"label": "B", "text": "Reader", "isCorrect": false},
+      {"label": "C", "text": "Owner", "isCorrect": true},
+      {"label": "D", "text": "Administrator", "isCorrect": false}
+    ],
+    "tags": ["rbac", "roles", "basics"]
+  },
+  {
+    "domain": "IDENTITY_GOVERNANCE",
+    "difficulty": "MEDIUM",
+    "qtype": "SINGLE",
+    "stem": "You need to ensure that users can only sign in to Azure from corporate office locations. What should you configure?",
+    "explanation": "Conditional Access policies with location conditions (named locations or IP ranges) can restrict sign-ins based on network location.",
+    "options": [
+      {"label": "A", "text": "Azure Policy", "isCorrect": false},
+      {"label": "B", "text": "Conditional Access policy", "isCorrect": true},
+      {"label": "C", "text": "Network Security Group", "isCorrect": false},
+      {"label": "D", "text": "Azure Firewall", "isCorrect": false}
+    ],
+    "tags": ["conditional-access", "location", "security"]
+  },
+  {
+    "domain": "IDENTITY_GOVERNANCE",
+    "difficulty": "HARD",
+    "qtype": "SINGLE",
+    "stem": "Your organization requires that all changes to production resource groups must be audited and reviewed. Which combination of Azure services should you use?",
+    "explanation": "Azure Policy can enforce tagging and compliance, while Activity Log provides audit trails of all operations. Azure Monitor can alert on specific activities, and Log Analytics enables advanced querying.",
+    "options": [
+      {"label": "A", "text": "Azure Policy and Activity Log", "isCorrect": true},
+      {"label": "B", "text": "Conditional Access and Azure AD logs", "isCorrect": false},
+      {"label": "C", "text": "NSG flow logs and Storage", "isCorrect": false},
+      {"label": "D", "text": "Azure Backup and Recovery Services", "isCorrect": false}
+    ],
+    "tags": ["audit", "policy", "compliance", "activity-log"]
+  },
+  {
+    "domain": "IDENTITY_GOVERNANCE",
+    "difficulty": "MEDIUM",
+    "qtype": "YESNO",
+    "stem": "Can a single user be assigned multiple Azure RBAC roles on the same resource?",
+    "explanation": "Yes, users can have multiple role assignments at various scopes. The effective permissions are the union of all assigned roles.",
+    "options": [
+      {"label": "A", "text": "Yes", "isCorrect": true},
+      {"label": "B", "text": "No", "isCorrect": false}
+    ],
+    "tags": ["rbac", "roles", "permissions"]
+  },
+  {
+    "domain": "IDENTITY_GOVERNANCE",
+    "difficulty": "EASY",
+    "qtype": "SINGLE",
+    "stem": "What is the purpose of a management group in Azure?",
+    "explanation": "Management groups provide a level of scope above subscriptions, allowing you to organize subscriptions and apply governance conditions like policies and RBAC across multiple subscriptions.",
+    "options": [
+      {"label": "A", "text": "To manage virtual machines", "isCorrect": false},
+      {"label": "B", "text": "To organize and manage multiple subscriptions", "isCorrect": true},
+      {"label": "C", "text": "To store secrets", "isCorrect": false},
+      {"label": "D", "text": "To configure network routing", "isCorrect": false}
+    ],
+    "tags": ["management-groups", "governance", "subscriptions"]
+  },
+  {
+    "domain": "IDENTITY_GOVERNANCE",
+    "difficulty": "MEDIUM",
+    "qtype": "MULTI",
+    "stem": "Which Azure AD features require an Azure AD Premium P2 license? (Choose all that apply)",
+    "explanation": "Privileged Identity Management (PIM), Identity Protection, and Access Reviews all require Azure AD Premium P2. Conditional Access requires P1.",
+    "options": [
+      {"label": "A", "text": "Privileged Identity Management", "isCorrect": true},
+      {"label": "B", "text": "Conditional Access", "isCorrect": false},
+      {"label": "C", "text": "Identity Protection", "isCorrect": true},
+      {"label": "D", "text": "Access Reviews", "isCorrect": true}
+    ],
+    "tags": ["licensing", "premium", "features"]
+  },
+  {
+    "domain": "IDENTITY_GOVERNANCE",
+    "difficulty": "HARD",
+    "qtype": "SINGLE",
+    "stem": "You need to automatically remove user access to a resource group after 90 days. What should you implement?",
+    "explanation": "Azure AD Access Reviews can be configured to periodically review and automatically remove access. PIM provides time-limited access but requires manual activation.",
+    "options": [
+      {"label": "A", "text": "Azure Policy with audit effect", "isCorrect": false},
+      {"label": "B", "text": "Azure AD Access Reviews with auto-apply", "isCorrect": true},
+      {"label": "C", "text": "Privileged Identity Management eligible assignments", "isCorrect": false},
+      {"label": "D", "text": "Conditional Access session controls", "isCorrect": false}
+    ],
+    "tags": ["access-reviews", "governance", "automation"]
+  },
+  {
+    "domain": "IDENTITY_GOVERNANCE",
+    "difficulty": "EASY",
+    "qtype": "SINGLE",
+    "stem": "Which scope level is the smallest/most specific in Azure RBAC?",
+    "explanation": "In Azure RBAC, the hierarchy from largest to smallest is: Management Group > Subscription > Resource Group > Resource. Individual resources are the most specific scope.",
+    "options": [
+      {"label": "A", "text": "Management Group", "isCorrect": false},
+      {"label": "B", "text": "Subscription", "isCorrect": false},
+      {"label": "C", "text": "Resource Group", "isCorrect": false},
+      {"label": "D", "text": "Resource", "isCorrect": true}
+    ],
+    "tags": ["rbac", "scope", "hierarchy"]
+  },
+  {
+    "domain": "IDENTITY_GOVERNANCE",
+    "difficulty": "MEDIUM",
+    "qtype": "SINGLE",
+    "stem": "What is the difference between the Contributor and Owner roles?",
+    "explanation": "Both Contributor and Owner can manage resources, but only Owner can assign roles in Azure RBAC. Contributor cannot grant access to others.",
+    "options": [
+      {"label": "A", "text": "Contributor can delete resources, Owner cannot", "isCorrect": false},
+      {"label": "B", "text": "Owner can assign RBAC roles, Contributor cannot", "isCorrect": true},
+      {"label": "C", "text": "Contributor has read-only access, Owner has full access", "isCorrect": false},
+      {"label": "D", "text": "There is no difference", "isCorrect": false}
+    ],
+    "tags": ["rbac", "roles", "permissions"]
+  },
+  {
+    "domain": "IDENTITY_GOVERNANCE",
+    "difficulty": "EASY",
+    "qtype": "YESNO",
+    "stem": "Does Azure Policy prevent non-compliant resources from being created?",
+    "explanation": "Azure Policy can prevent non-compliant resources when using the Deny or DeployIfNotExists effects. However, Audit and AuditIfNotExists effects only report compliance without blocking creation.",
+    "options": [
+      {"label": "A", "text": "Yes", "isCorrect": true},
+      {"label": "B", "text": "No", "isCorrect": false}
+    ],
+    "tags": ["policy", "compliance", "enforcement"]
+  },
+  {
+    "domain": "IDENTITY_GOVERNANCE",
+    "difficulty": "HARD",
+    "qtype": "MULTI",
+    "stem": "Your company requires multi-factor authentication for all administrative roles. Which Azure services should you configure? (Choose all that apply)",
+    "explanation": "Conditional Access can require MFA based on role membership. PIM can require MFA during role activation. Security defaults enable MFA for all users but lack granular control.",
+    "options": [
+      {"label": "A", "text": "Conditional Access policies", "isCorrect": true},
+      {"label": "B", "text": "Privileged Identity Management", "isCorrect": true},
+      {"label": "C", "text": "Azure Policy", "isCorrect": false},
+      {"label": "D", "text": "Network Security Groups", "isCorrect": false}
+    ],
+    "tags": ["mfa", "conditional-access", "pim", "security"]
+  },
+  {
+    "domain": "IDENTITY_GOVERNANCE",
+    "difficulty": "MEDIUM",
+    "qtype": "SINGLE",
+    "stem": "You need to prevent users from creating virtual machines in a specific region. What should you use?",
+    "explanation": "Azure Policy can restrict which Azure regions (locations) resources can be deployed to using the 'Allowed locations' or custom policy definitions.",
+    "options": [
+      {"label": "A", "text": "RBAC deny assignment", "isCorrect": false},
+      {"label": "B", "text": "Azure Policy", "isCorrect": true},
+      {"label": "C", "text": "Resource locks", "isCorrect": false},
+      {"label": "D", "text": "Conditional Access", "isCorrect": false}
+    ],
+    "tags": ["policy", "regions", "governance"]
+  },
+  {
+    "domain": "IDENTITY_GOVERNANCE",
+    "difficulty": "EASY",
+    "qtype": "SINGLE",
+    "stem": "What type of lock prevents both modifications and deletions of Azure resources?",
+    "explanation": "A ReadOnly lock prevents any modifications including updates and deletions. CanNotDelete lock only prevents deletion but allows modifications.",
+    "options": [
+      {"label": "A", "text": "CanNotDelete", "isCorrect": false},
+      {"label": "B", "text": "ReadOnly", "isCorrect": true},
+      {"label": "C", "text": "DoNotModify", "isCorrect": false},
+      {"label": "D", "text": "Protected", "isCorrect": false}
+    ],
+    "tags": ["locks", "governance", "protection"]
+  },
+  {
+    "domain": "IDENTITY_GOVERNANCE",
+    "difficulty": "MEDIUM",
+    "qtype": "YESNO",
+    "stem": "Can Azure Policy automatically remediate non-compliant resources that were created before the policy was assigned?",
+    "explanation": "Yes, Azure Policy supports remediation tasks that can automatically fix non-compliant resources, including those created before the policy assignment, when using DeployIfNotExists or Modify effects.",
+    "options": [
+      {"label": "A", "text": "Yes", "isCorrect": true},
+      {"label": "B", "text": "No", "isCorrect": false}
+    ],
+    "tags": ["policy", "remediation", "compliance"]
+  },
+  {
+    "domain": "IDENTITY_GOVERNANCE",
+    "difficulty": "HARD",
+    "qtype": "SINGLE",
+    "stem": "You need to ensure that all storage accounts in your subscription require secure transfer (HTTPS). The solution must automatically configure existing and new storage accounts. Which Azure Policy effect should you use?",
+    "explanation": "The Modify effect can alter resource properties both during creation and for existing resources through remediation tasks. This allows automatic configuration of the secure transfer required property.",
+    "options": [
+      {"label": "A", "text": "Audit", "isCorrect": false},
+      {"label": "B", "text": "Deny", "isCorrect": false},
+      {"label": "C", "text": "DeployIfNotExists", "isCorrect": false},
+      {"label": "D", "text": "Modify", "isCorrect": true}
+    ],
+    "tags": ["policy", "modify", "storage", "security"]
+  },
+  {
+    "domain": "STORAGE",
+    "difficulty": "EASY",
+    "qtype": "SINGLE",
+    "stem": "Which Azure Storage redundancy option provides the highest durability?",
+    "explanation": "Geo-zone-redundant storage (GZRS) provides the highest durability by replicating data across availability zones in the primary region and to a secondary region, offering both zone and regional redundancy.",
+    "options": [
+      {"label": "A", "text": "Locally redundant storage (LRS)", "isCorrect": false},
+      {"label": "B", "text": "Zone-redundant storage (ZRS)", "isCorrect": false},
+      {"label": "C", "text": "Geo-redundant storage (GRS)", "isCorrect": false},
+      {"label": "D", "text": "Geo-zone-redundant storage (GZRS)", "isCorrect": true}
+    ],
+    "tags": ["storage", "redundancy", "durability"]
+  },
+  {
+    "domain": "STORAGE",
+    "difficulty": "MEDIUM",
+    "qtype": "SINGLE",
+    "stem": "You need to provide temporary access to a blob in Azure Storage without sharing your account key. What should you use?",
+    "explanation": "A Shared Access Signature (SAS) provides delegated access to storage resources with specified permissions and time period, without exposing the account key.",
+    "options": [
+      {"label": "A", "text": "Storage account key", "isCorrect": false},
+      {"label": "B", "text": "Shared Access Signature (SAS)", "isCorrect": true},
+      {"label": "C", "text": "Azure AD authentication", "isCorrect": false},
+      {"label": "D", "text": "Anonymous public access", "isCorrect": false}
+    ],
+    "tags": ["storage", "sas", "security", "access"]
+  },
+  {
+    "domain": "STORAGE",
+    "difficulty": "HARD",
+    "qtype": "MULTI",
+    "stem": "Which access tiers are available for Azure Blob Storage? (Choose all that apply)",
+    "explanation": "Azure Blob Storage offers Hot, Cool, Cold, and Archive access tiers. Each tier is optimized for different access patterns and storage costs.",
+    "options": [
+      {"label": "A", "text": "Hot", "isCorrect": true},
+      {"label": "B", "text": "Cool", "isCorrect": true},
+      {"label": "C", "text": "Cold", "isCorrect": true},
+      {"label": "D", "text": "Archive", "isCorrect": true}
+    ],
+    "tags": ["storage", "blob", "access-tiers"]
+  },
+  {
+    "domain": "STORAGE",
+    "difficulty": "EASY",
+    "qtype": "YESNO",
+    "stem": "Can you change a storage account from LRS to GRS after it has been created?",
+    "explanation": "Yes, you can change the replication strategy of an existing storage account through the Azure portal, PowerShell, or CLI. However, some changes may take time to complete.",
+    "options": [
+      {"label": "A", "text": "Yes", "isCorrect": true},
+      {"label": "B", "text": "No", "isCorrect": false}
+    ],
+    "tags": ["storage", "replication", "migration"]
+  },
+  {
+    "domain": "STORAGE",
+    "difficulty": "MEDIUM",
+    "qtype": "SINGLE",
+    "stem": "What is the minimum replication option required to protect against datacenter-level failures?",
+    "explanation": "Zone-redundant storage (ZRS) replicates data across three availability zones in a region, protecting against datacenter-level failures. LRS only replicates within a single datacenter.",
+    "options": [
+      {"label": "A", "text": "Locally redundant storage (LRS)", "isCorrect": false},
+      {"label": "B", "text": "Zone-redundant storage (ZRS)", "isCorrect": true},
+      {"label": "C", "text": "Geo-redundant storage (GRS)", "isCorrect": false},
+      {"label": "D", "text": "Read-access geo-redundant storage (RA-GRS)", "isCorrect": false}
+    ],
+    "tags": ["storage", "redundancy", "availability-zones"]
+  },
+  {
+    "domain": "STORAGE",
+    "difficulty": "HARD",
+    "qtype": "SINGLE",
+    "stem": "You have a blob in the Archive tier. How long does it typically take to rehydrate it to the Hot tier for immediate access?",
+    "explanation": "Rehydrating a blob from Archive tier can take up to 15 hours for standard priority. High priority rehydration is faster (typically under 1 hour for small objects) but costs more.",
+    "options": [
+      {"label": "A", "text": "Immediate (less than 1 minute)", "isCorrect": false},
+      {"label": "B", "text": "1-2 hours", "isCorrect": false},
+      {"label": "C", "text": "Up to 15 hours", "isCorrect": true},
+      {"label": "D", "text": "24-48 hours", "isCorrect": false}
+    ],
+    "tags": ["storage", "archive", "rehydration", "performance"]
+  },
+  {
+    "domain": "STORAGE",
+    "difficulty": "EASY",
+    "qtype": "SINGLE",
+    "stem": "Which Azure Storage service should you use to store virtual machine disks?",
+    "explanation": "Azure Managed Disks (based on Page Blobs) are specifically designed for VM disks, providing high performance and reliability for virtual machines.",
+    "options": [
+      {"label": "A", "text": "Blob Storage (Block Blobs)", "isCorrect": false},
+      {"label": "B", "text": "File Storage", "isCorrect": false},
+      {"label": "C", "text": "Managed Disks (Page Blobs)", "isCorrect": true},
+      {"label": "D", "text": "Table Storage", "isCorrect": false}
+    ],
+    "tags": ["storage", "disks", "vms"]
+  },
+  {
+    "domain": "STORAGE",
+    "difficulty": "MEDIUM",
+    "qtype": "MULTI",
+    "stem": "Which authentication methods are supported for Azure Files? (Choose all that apply)",
+    "explanation": "Azure Files supports on-premises Active Directory Domain Services, Azure AD Domain Services, and Storage account keys for authentication. Azure AD without domain services is not supported for SMB access.",
+    "options": [
+      {"label": "A", "text": "On-premises Active Directory Domain Services", "isCorrect": true},
+      {"label": "B", "text": "Azure Active Directory Domain Services", "isCorrect": true},
+      {"label": "C", "text": "Storage account key", "isCorrect": true},
+      {"label": "D", "text": "Certificate-based authentication", "isCorrect": false}
+    ],
+    "tags": ["storage", "files", "authentication", "smb"]
+  },
+  {
+    "domain": "STORAGE",
+    "difficulty": "EASY",
+    "qtype": "YESNO",
+    "stem": "Can you enable soft delete for blobs to recover deleted data?",
+    "explanation": "Yes, blob soft delete allows you to recover blobs, snapshots, and versions after they have been deleted. You can configure the retention period (1-365 days).",
+    "options": [
+      {"label": "A", "text": "Yes", "isCorrect": true},
+      {"label": "B", "text": "No", "isCorrect": false}
+    ],
+    "tags": ["storage", "soft-delete", "data-protection"]
+  },
+  {
+    "domain": "STORAGE",
+    "difficulty": "MEDIUM",
+    "qtype": "SINGLE",
+    "stem": "You need to automatically move blobs that haven't been modified in 90 days to the Cool tier. What should you configure?",
+    "explanation": "Azure Blob Storage lifecycle management policies allow you to automatically transition blobs between access tiers or delete them based on rules you define.",
+    "options": [
+      {"label": "A", "text": "Azure Automation runbook", "isCorrect": false},
+      {"label": "B", "text": "Blob lifecycle management policy", "isCorrect": true},
+      {"label": "C", "text": "Azure Logic App", "isCorrect": false},
+      {"label": "D", "text": "Azure Function with timer trigger", "isCorrect": false}
+    ],
+    "tags": ["storage", "lifecycle", "automation", "cost-optimization"]
+  },
+  {
+    "domain": "STORAGE",
+    "difficulty": "HARD",
+    "qtype": "SINGLE",
+    "stem": "Your application requires low-latency access to frequently accessed data in the first 30 days, then data is rarely accessed. Which strategy minimizes costs while meeting requirements?",
+    "explanation": "Start with Hot tier for low-latency access, then use lifecycle management to automatically move blobs to Cool tier after 30 days of inactivity, optimizing for both performance and cost.",
+    "options": [
+      {"label": "A", "text": "Store in Hot tier permanently", "isCorrect": false},
+      {"label": "B", "text": "Store in Cool tier permanently", "isCorrect": false},
+      {"label": "C", "text": "Use Hot tier with lifecycle policy to Cool after 30 days", "isCorrect": true},
+      {"label": "D", "text": "Store in Archive tier and rehydrate when needed", "isCorrect": false}
+    ],
+    "tags": ["storage", "lifecycle", "cost-optimization", "performance"]
+  },
+  {
+    "domain": "STORAGE",
+    "difficulty": "MEDIUM",
+    "qtype": "YESNO",
+    "stem": "Does Azure Files support both SMB and NFS protocols?",
+    "explanation": "Yes, Azure Files supports both SMB (Server Message Block) protocol for Windows and Linux, and NFS (Network File System) protocol for Linux workloads.",
+    "options": [
+      {"label": "A", "text": "Yes", "isCorrect": true},
+      {"label": "B", "text": "No", "isCorrect": false}
+    ],
+    "tags": ["storage", "files", "protocols", "smb", "nfs"]
+  },
+  {
+    "domain": "STORAGE",
+    "difficulty": "EASY",
+    "qtype": "SINGLE",
+    "stem": "What is the maximum size of a single block blob in Azure Storage?",
+    "explanation": "Azure Block Blobs can store approximately 190.7 TiB (4.75 TiB x 50,000 blocks). For general purpose v2 accounts, this is the maximum size for block blobs.",
+    "options": [
+      {"label": "A", "text": "5 TiB", "isCorrect": false},
+      {"label": "B", "text": "100 TiB", "isCorrect": false},
+      {"label": "C", "text": "190.7 TiB", "isCorrect": true},
+      {"label": "D", "text": "Unlimited", "isCorrect": false}
+    ],
+    "tags": ["storage", "blob", "limits", "capacity"]
+  },
+  {
+    "domain": "STORAGE",
+    "difficulty": "HARD",
+    "qtype": "MULTI",
+    "stem": "Which features help protect data in Azure Storage from accidental deletion or modification? (Choose all that apply)",
+    "explanation": "Soft delete recovers deleted data, blob versioning maintains previous versions, immutable storage prevents modification/deletion, and point-in-time restore can recover to a previous state.",
+    "options": [
+      {"label": "A", "text": "Soft delete", "isCorrect": true},
+      {"label": "B", "text": "Blob versioning", "isCorrect": true},
+      {"label": "C", "text": "Immutable storage", "isCorrect": true},
+      {"label": "D", "text": "Point-in-time restore", "isCorrect": true}
+    ],
+    "tags": ["storage", "data-protection", "compliance", "backup"]
+  },
+  {
+    "domain": "STORAGE",
+    "difficulty": "MEDIUM",
+    "qtype": "SINGLE",
+    "stem": "You need to provide a third-party application limited access to your storage account for 7 days. Which type of SAS token should you use?",
+    "explanation": "A service SAS provides delegated access to specific services (blob, queue, table, or file) with fine-grained control and can be time-limited. Account SAS is broader but also works.",
+    "options": [
+      {"label": "A", "text": "Account SAS", "isCorrect": false},
+      {"label": "B", "text": "Service SAS", "isCorrect": true},
+      {"label": "C", "text": "User delegation SAS", "isCorrect": false},
+      {"label": "D", "text": "Stored access policy", "isCorrect": false}
+    ],
+    "tags": ["storage", "sas", "security", "delegation"]
+  },
+  {
+    "domain": "STORAGE",
+    "difficulty": "EASY",
+    "qtype": "YESNO",
+    "stem": "Can you configure Azure Storage to require secure transfer (HTTPS) only?",
+    "explanation": "Yes, you can enable 'Secure transfer required' on a storage account to enforce that all requests use HTTPS. Requests using HTTP will be rejected.",
+    "options": [
+      {"label": "A", "text": "Yes", "isCorrect": true},
+      {"label": "B", "text": "No", "isCorrect": false}
+    ],
+    "tags": ["storage", "security", "https", "encryption"]
+  },
+  {
+    "domain": "STORAGE",
+    "difficulty": "MEDIUM",
+    "qtype": "SINGLE",
+    "stem": "What is the primary benefit of using Azure Storage private endpoints?",
+    "explanation": "Private endpoints assign a private IP address from your VNet to the storage account, allowing access over private connectivity and blocking public internet access.",
+    "options": [
+      {"label": "A", "text": "Increased storage capacity", "isCorrect": false},
+      {"label": "B", "text": "Access storage via private IP within VNet", "isCorrect": true},
+      {"label": "C", "text": "Automatic replication to secondary region", "isCorrect": false},
+      {"label": "D", "text": "Reduced storage costs", "isCorrect": false}
+    ],
+    "tags": ["storage", "private-endpoint", "networking", "security"]
+  },
+  {
+    "domain": "STORAGE",
+    "difficulty": "HARD",
+    "qtype": "SINGLE",
+    "stem": "Your company requires that all data in storage accounts be encrypted with customer-managed keys stored in Azure Key Vault. Which encryption option should you configure?",
+    "explanation": "Customer-managed keys (CMK) allow you to use your own encryption keys stored in Azure Key Vault for storage service encryption, providing greater control over key lifecycle.",
+    "options": [
+      {"label": "A", "text": "Microsoft-managed keys (default encryption)", "isCorrect": false},
+      {"label": "B", "text": "Customer-managed keys in Azure Key Vault", "isCorrect": true},
+      {"label": "C", "text": "Client-side encryption", "isCorrect": false},
+      {"label": "D", "text": "Infrastructure encryption", "isCorrect": false}
+    ],
+    "tags": ["storage", "encryption", "cmk", "key-vault", "security"]
+  },
+  {
+    "domain": "STORAGE",
+    "difficulty": "MEDIUM",
+    "qtype": "MULTI",
+    "stem": "Which storage account types support blob access tiers? (Choose all that apply)",
+    "explanation": "General-purpose v2 and Blob Storage accounts support blob access tiers (Hot, Cool, Cold, Archive). General-purpose v1 and Premium accounts do not support tiering.",
+    "options": [
+      {"label": "A", "text": "General-purpose v1", "isCorrect": false},
+      {"label": "B", "text": "General-purpose v2", "isCorrect": true},
+      {"label": "C", "text": "Blob Storage", "isCorrect": true},
+      {"label": "D", "text": "Premium Block Blob", "isCorrect": false}
+    ],
+    "tags": ["storage", "account-types", "access-tiers"]
+  },
+  {
+    "domain": "STORAGE",
+    "difficulty": "EASY",
+    "qtype": "SINGLE",
+    "stem": "Which Azure service provides file shares that can be mounted using the SMB protocol?",
+    "explanation": "Azure Files provides fully managed file shares in the cloud that are accessible via SMB and NFS protocols, allowing them to be mounted by cloud and on-premises deployments.",
+    "options": [
+      {"label": "A", "text": "Azure Blob Storage", "isCorrect": false},
+      {"label": "B", "text": "Azure Files", "isCorrect": true},
+      {"label": "C", "text": "Azure Disk Storage", "isCorrect": false},
+      {"label": "D", "text": "Azure Queue Storage", "isCorrect": false}
+    ],
+    "tags": ["storage", "files", "smb", "file-shares"]
+  },
+  {
+    "domain": "COMPUTE",
+    "difficulty": "EASY",
+    "qtype": "SINGLE",
+    "stem": "Which Azure service allows you to run containers without managing the underlying infrastructure?",
+    "explanation": "Azure Container Instances (ACI) provides the fastest and simplest way to run containers in Azure without having to manage virtual machines or adopt higher-level services.",
+    "options": [
+      {"label": "A", "text": "Azure Virtual Machines", "isCorrect": false},
+      {"label": "B", "text": "Azure Container Instances", "isCorrect": true},
+      {"label": "C", "text": "Azure App Service", "isCorrect": false},
+      {"label": "D", "text": "Azure Batch", "isCorrect": false}
+    ],
+    "tags": ["compute", "containers", "aci", "serverless"]
+  },
+  {
+    "domain": "COMPUTE",
+    "difficulty": "MEDIUM",
+    "qtype": "SINGLE",
+    "stem": "You need to ensure that a virtual machine continues running even if a single datacenter fails. What should you configure?",
+    "explanation": "Availability Zones are physically separate datacenters within an Azure region. Deploying VMs across zones protects against datacenter-level failures.",
+    "options": [
+      {"label": "A", "text": "Availability Set", "isCorrect": false},
+      {"label": "B", "text": "Availability Zone", "isCorrect": true},
+      {"label": "C", "text": "Scale Set", "isCorrect": false},
+      {"label": "D", "text": "Proximity Placement Group", "isCorrect": false}
+    ],
+    "tags": ["compute", "availability-zones", "high-availability", "vms"]
+  },
+  {
+    "domain": "COMPUTE",
+    "difficulty": "HARD",
+    "qtype": "MULTI",
+    "stem": "Which factors affect the cost of an Azure Virtual Machine? (Choose all that apply)",
+    "explanation": "VM costs include compute (VM size and hours), storage (disks), bandwidth (outbound data transfer), and optional features like backup. Inbound data transfer is typically free.",
+    "options": [
+      {"label": "A", "text": "VM size and running hours", "isCorrect": true},
+      {"label": "B", "text": "Disk storage type and size", "isCorrect": true},
+      {"label": "C", "text": "Outbound data transfer", "isCorrect": true},
+      {"label": "D", "text": "Number of virtual networks", "isCorrect": false}
+    ],
+    "tags": ["compute", "cost", "pricing", "vms"]
+  },
+  {
+    "domain": "COMPUTE",
+    "difficulty": "EASY",
+    "qtype": "YESNO",
+    "stem": "Can you resize an Azure VM to a different VM size after it has been deployed?",
+    "explanation": "Yes, you can resize VMs to different sizes within the same VM family or different families, though the VM must be deallocated for some resize operations.",
+    "options": [
+      {"label": "A", "text": "Yes", "isCorrect": true},
+      {"label": "B", "text": "No", "isCorrect": false}
+    ],
+    "tags": ["compute", "vms", "resize", "flexibility"]
+  },
+  {
+    "domain": "COMPUTE",
+    "difficulty": "MEDIUM",
+    "qtype": "SINGLE",
+    "stem": "What is the maximum number of virtual machines you can place in an availability set?",
+    "explanation": "An availability set can contain a maximum of 3 fault domains and up to 20 update domains, but the key limit is that you can have up to 200 VMs in a single availability set in most regions.",
+    "options": [
+      {"label": "A", "text": "10", "isCorrect": false},
+      {"label": "B", "text": "50", "isCorrect": false},
+      {"label": "C", "text": "100", "isCorrect": false},
+      {"label": "D", "text": "200", "isCorrect": true}
+    ],
+    "tags": ["compute", "availability-sets", "limits", "vms"]
+  },
+  {
+    "domain": "COMPUTE",
+    "difficulty": "HARD",
+    "qtype": "SINGLE",
+    "stem": "You are deploying a multi-tier application with web, application, and database tiers. Each tier must be isolated from update domain failures. What should you use?",
+    "explanation": "Create separate availability sets for each tier. This ensures that VMs in different tiers are distributed across different update and fault domains, preventing a single maintenance event from affecting all tiers.",
+    "options": [
+      {"label": "A", "text": "Single availability set with all VMs", "isCorrect": false},
+      {"label": "B", "text": "Separate availability set for each tier", "isCorrect": true},
+      {"label": "C", "text": "Single availability zone", "isCorrect": false},
+      {"label": "D", "text": "Proximity placement group", "isCorrect": false}
+    ],
+    "tags": ["compute", "availability-sets", "architecture", "high-availability"]
+  },
+  {
+    "domain": "COMPUTE",
+    "difficulty": "EASY",
+    "qtype": "SINGLE",
+    "stem": "Which disk type provides the highest performance for Azure Virtual Machines?",
+    "explanation": "Premium SSD v2 and Ultra Disk offer the highest performance, but among the common options, Premium SSD provides high performance with low latency, suitable for production workloads.",
+    "options": [
+      {"label": "A", "text": "Standard HDD", "isCorrect": false},
+      {"label": "B", "text": "Standard SSD", "isCorrect": false},
+      {"label": "C", "text": "Premium SSD", "isCorrect": true},
+      {"label": "D", "text": "Unmanaged disk", "isCorrect": false}
+    ],
+    "tags": ["compute", "disks", "performance", "storage"]
+  },
+  {
+    "domain": "COMPUTE",
+    "difficulty": "MEDIUM",
+    "qtype": "MULTI",
+    "stem": "Which features are available with Azure VM Scale Sets? (Choose all that apply)",
+    "explanation": "VM Scale Sets support autoscaling based on metrics, load balancing for traffic distribution, and automatic updates with rolling deployments. Custom images are supported but not automatic patching without configuration.",
+    "options": [
+      {"label": "A", "text": "Automatic scaling based on metrics", "isCorrect": true},
+      {"label": "B", "text": "Load balancing across instances", "isCorrect": true},
+      {"label": "C", "text": "Automatic OS image updates", "isCorrect": true},
+      {"label": "D", "text": "Built-in database replication", "isCorrect": false}
+    ],
+    "tags": ["compute", "vmss", "scale-sets", "autoscaling"]
+  },
+  {
+    "domain": "COMPUTE",
+    "difficulty": "EASY",
+    "qtype": "YESNO",
+    "stem": "Can you configure Azure VMs to automatically shut down at a scheduled time?",
+    "explanation": "Yes, Azure provides an auto-shutdown feature that allows you to schedule automatic shutdown of VMs at a specific time, helping reduce costs for non-production environments.",
+    "options": [
+      {"label": "A", "text": "Yes", "isCorrect": true},
+      {"label": "B", "text": "No", "isCorrect": false}
+    ],
+    "tags": ["compute", "vms", "automation", "cost-optimization"]
+  },
+  {
+    "domain": "COMPUTE",
+    "difficulty": "MEDIUM",
+    "qtype": "SINGLE",
+    "stem": "You need to deploy identical VMs across multiple regions for disaster recovery. What should you use to ensure consistency?",
+    "explanation": "Azure Compute Gallery (formerly Shared Image Gallery) allows you to create versioned, replicated VM images that can be shared across regions and used to deploy consistent VMs.",
+    "options": [
+      {"label": "A", "text": "VM snapshots", "isCorrect": false},
+      {"label": "B", "text": "Azure Compute Gallery", "isCorrect": true},
+      {"label": "C", "text": "Azure Backup", "isCorrect": false},
+      {"label": "D", "text": "VM templates", "isCorrect": false}
+    ],
+    "tags": ["compute", "images", "disaster-recovery", "replication"]
+  },
+  {
+    "domain": "COMPUTE",
+    "difficulty": "HARD",
+    "qtype": "SINGLE",
+    "stem": "Your application requires single-digit millisecond latency between VMs. What should you configure?",
+    "explanation": "A Proximity Placement Group ensures that Azure resources are physically located close to each other, minimizing network latency between VMs to single-digit milliseconds.",
+    "options": [
+      {"label": "A", "text": "Availability Set", "isCorrect": false},
+      {"label": "B", "text": "Availability Zone", "isCorrect": false},
+      {"label": "C", "text": "Proximity Placement Group", "isCorrect": true},
+      {"label": "D", "text": "Virtual Network with ExpressRoute", "isCorrect": false}
+    ],
+    "tags": ["compute", "proximity-placement-group", "latency", "performance"]
+  },
+  {
+    "domain": "COMPUTE",
+    "difficulty": "MEDIUM",
+    "qtype": "YESNO",
+    "stem": "Can Azure Spot Virtual Machines be used for production workloads that require high availability?",
+    "explanation": "No, Spot VMs can be evicted at any time when Azure needs the capacity back. They are best suited for interruptible workloads like batch processing, dev/test, not for production workloads requiring high availability.",
+    "options": [
+      {"label": "A", "text": "Yes", "isCorrect": false},
+      {"label": "B", "text": "No", "isCorrect": true}
+    ],
+    "tags": ["compute", "spot-vms", "availability", "cost-optimization"]
+  },
+  {
+    "domain": "COMPUTE",
+    "difficulty": "EASY",
+    "qtype": "SINGLE",
+    "stem": "Which extension type allows you to run scripts on Azure VMs after deployment?",
+    "explanation": "The Custom Script Extension allows you to download and execute scripts on Azure VMs, commonly used for post-deployment configuration and automation.",
+    "options": [
+      {"label": "A", "text": "Backup Extension", "isCorrect": false},
+      {"label": "B", "text": "Custom Script Extension", "isCorrect": true},
+      {"label": "C", "text": "Network Watcher Extension", "isCorrect": false},
+      {"label": "D", "text": "Diagnostics Extension", "isCorrect": false}
+    ],
+    "tags": ["compute", "extensions", "automation", "scripts"]
+  },
+  {
+    "domain": "COMPUTE",
+    "difficulty": "HARD",
+    "qtype": "MULTI",
+    "stem": "You need to minimize costs for a VM that runs batch processing jobs overnight. Which strategies should you consider? (Choose all that apply)",
+    "explanation": "Spot VMs offer significant discounts for interruptible workloads. Auto-shutdown during non-working hours and Reserved Instances for predictable workloads both reduce costs. Premium SSD increases costs.",
+    "options": [
+      {"label": "A", "text": "Use Spot Virtual Machines", "isCorrect": true},
+      {"label": "B", "text": "Configure auto-shutdown during non-use hours", "isCorrect": true},
+      {"label": "C", "text": "Purchase Reserved Instances", "isCorrect": true},
+      {"label": "D", "text": "Use Premium SSD disks", "isCorrect": false}
+    ],
+    "tags": ["compute", "cost-optimization", "spot-vms", "reserved-instances"]
+  },
+  {
+    "domain": "COMPUTE",
+    "difficulty": "MEDIUM",
+    "qtype": "SINGLE",
+    "stem": "What is the difference between an availability set and an availability zone?",
+    "explanation": "Availability sets protect against hardware failures within a datacenter using fault/update domains. Availability zones protect against entire datacenter failures by spreading across physically separated datacenters.",
+    "options": [
+      {"label": "A", "text": "No difference, they are the same", "isCorrect": false},
+      {"label": "B", "text": "Availability sets protect against rack failures, zones protect against datacenter failures", "isCorrect": true},
+      {"label": "C", "text": "Availability zones are only for storage", "isCorrect": false},
+      {"label": "D", "text": "Availability sets require premium disks", "isCorrect": false}
+    ],
+    "tags": ["compute", "availability-sets", "availability-zones", "high-availability"]
+  },
+  {
+    "domain": "COMPUTE",
+    "difficulty": "EASY",
+    "qtype": "YESNO",
+    "stem": "Does Azure App Service support both Windows and Linux hosting?",
+    "explanation": "Yes, Azure App Service supports hosting web applications on both Windows and Linux operating systems, with each having dedicated App Service Plans.",
+    "options": [
+      {"label": "A", "text": "Yes", "isCorrect": true},
+      {"label": "B", "text": "No", "isCorrect": false}
+    ],
+    "tags": ["compute", "app-service", "platform", "hosting"]
+  },
+  {
+    "domain": "COMPUTE",
+    "difficulty": "MEDIUM",
+    "qtype": "SINGLE",
+    "stem": "Which App Service plan tier is required to enable custom domains with SSL?",
+    "explanation": "The Basic tier and above support custom domains and SSL certificates. The Free and Shared tiers do not support custom domain SSL bindings.",
+    "options": [
+      {"label": "A", "text": "Free", "isCorrect": false},
+      {"label": "B", "text": "Shared", "isCorrect": false},
+      {"label": "C", "text": "Basic", "isCorrect": true},
+      {"label": "D", "text": "Consumption", "isCorrect": false}
+    ],
+    "tags": ["compute", "app-service", "pricing", "ssl"]
+  },
+  {
+    "domain": "COMPUTE",
+    "difficulty": "HARD",
+    "qtype": "SINGLE",
+    "stem": "Your web application experiences high traffic spikes during business hours. You need to automatically scale out and scale in based on CPU usage. What is the minimum App Service plan tier required?",
+    "explanation": "Automatic scaling (autoscale) requires the Standard tier or higher. Basic tier has manual scaling only, while Free and Shared don't support scaling.",
+    "options": [
+      {"label": "A", "text": "Basic", "isCorrect": false},
+      {"label": "B", "text": "Standard", "isCorrect": true},
+      {"label": "C", "text": "Premium", "isCorrect": false},
+      {"label": "D", "text": "Isolated", "isCorrect": false}
+    ],
+    "tags": ["compute", "app-service", "autoscaling", "pricing"]
+  },
+  {
+    "domain": "COMPUTE",
+    "difficulty": "EASY",
+    "qtype": "SINGLE",
+    "stem": "Which Azure service provides fully managed Kubernetes?",
+    "explanation": "Azure Kubernetes Service (AKS) is a fully managed Kubernetes container orchestration service that simplifies deploying and managing containerized applications.",
+    "options": [
+      {"label": "A", "text": "Azure Container Instances", "isCorrect": false},
+      {"label": "B", "text": "Azure Kubernetes Service", "isCorrect": true},
+      {"label": "C", "text": "Azure Container Registry", "isCorrect": false},
+      {"label": "D", "text": "Azure App Service", "isCorrect": false}
+    ],
+    "tags": ["compute", "aks", "kubernetes", "containers"]
+  },
+  {
+    "domain": "COMPUTE",
+    "difficulty": "MEDIUM",
+    "qtype": "MULTI",
+    "stem": "Which deployment slots features are available in Azure App Service? (Choose all that apply)",
+    "explanation": "App Service deployment slots support traffic routing for testing, swapping between slots with zero downtime, and auto-swap. They don't provide automatic geographic replication.",
+    "options": [
+      {"label": "A", "text": "Traffic routing between slots", "isCorrect": true},
+      {"label": "B", "text": "Swap with production slot", "isCorrect": true},
+      {"label": "C", "text": "Auto-swap after deployment", "isCorrect": true},
+      {"label": "D", "text": "Automatic geographic replication", "isCorrect": false}
+    ],
+    "tags": ["compute", "app-service", "deployment-slots", "devops"]
+  },
+  {
+    "domain": "NETWORKING",
+    "difficulty": "EASY",
+    "qtype": "SINGLE",
+    "stem": "What is the smallest subnet you can create in an Azure Virtual Network?",
+    "explanation": "The smallest subnet in Azure is /29, which provides 8 IP addresses (5 usable after Azure reserves 5 addresses). /30 and smaller are not supported.",
+    "options": [
+      {"label": "A", "text": "/32", "isCorrect": false},
+      {"label": "B", "text": "/30", "isCorrect": false},
+      {"label": "C", "text": "/29", "isCorrect": true},
+      {"label": "D", "text": "/28", "isCorrect": false}
+    ],
+    "tags": ["networking", "vnet", "subnets", "ip-addressing"]
+  },
+  {
+    "domain": "NETWORKING",
+    "difficulty": "MEDIUM",
+    "qtype": "SINGLE",
+    "stem": "You need to allow traffic from the internet to a VM on port 443 but block all other inbound traffic. What should you configure?",
+    "explanation": "Network Security Groups (NSGs) control inbound and outbound traffic to Azure resources using security rules based on source, destination, port, and protocol.",
+    "options": [
+      {"label": "A", "text": "Azure Firewall rule", "isCorrect": false},
+      {"label": "B", "text": "Network Security Group rule", "isCorrect": true},
+      {"label": "C", "text": "Route table", "isCorrect": false},
+      {"label": "D", "text": "Application Gateway rule", "isCorrect": false}
+    ],
+    "tags": ["networking", "nsg", "security", "firewall"]
+  },
+  {
+    "domain": "NETWORKING",
+    "difficulty": "HARD",
+    "qtype": "MULTI",
+    "stem": "Which Azure services can be used to filter and inspect network traffic? (Choose all that apply)",
+    "explanation": "Azure Firewall inspects traffic with threat intelligence and application rules. NSGs provide basic filtering. Application Gateway offers WAF. Azure Front Door provides DDoS and WAF at the edge.",
+    "options": [
+      {"label": "A", "text": "Azure Firewall", "isCorrect": true},
+      {"label": "B", "text": "Network Security Groups", "isCorrect": true},
+      {"label": "C", "text": "Application Gateway with WAF", "isCorrect": true},
+      {"label": "D", "text": "Azure DNS", "isCorrect": false}
+    ],
+    "tags": ["networking", "security", "firewall", "traffic-filtering"]
+  },
+  {
+    "domain": "NETWORKING",
+    "difficulty": "EASY",
+    "qtype": "YESNO",
+    "stem": "Can you peer two virtual networks in different Azure regions?",
+    "explanation": "Yes, global VNet peering allows you to connect virtual networks across different Azure regions, enabling resources to communicate privately across regions.",
+    "options": [
+      {"label": "A", "text": "Yes", "isCorrect": true},
+      {"label": "B", "text": "No", "isCorrect": false}
+    ],
+    "tags": ["networking", "vnet-peering", "global", "regions"]
+  },
+  {
+    "domain": "NETWORKING",
+    "difficulty": "MEDIUM",
+    "qtype": "SINGLE",
+    "stem": "What is the purpose of a User Defined Route (UDR) in Azure?",
+    "explanation": "User Defined Routes override Azure's default system routes, allowing you to control how traffic is routed within your VNet, commonly used to force traffic through a network virtual appliance.",
+    "options": [
+      {"label": "A", "text": "To assign IP addresses to VMs", "isCorrect": false},
+      {"label": "B", "text": "To override Azure's default routing behavior", "isCorrect": true},
+      {"label": "C", "text": "To configure DNS settings", "isCorrect": false},
+      {"label": "D", "text": "To enable VNet peering", "isCorrect": false}
+    ],
+    "tags": ["networking", "routing", "udr", "custom-routes"]
+  },
+  {
+    "domain": "NETWORKING",
+    "difficulty": "HARD",
+    "qtype": "SINGLE",
+    "stem": "You have three VNets: A, B, and C. VNet A is peered with VNet B, and VNet B is peered with VNet C. Can resources in VNet A communicate with resources in VNet C by default?",
+    "explanation": "No, VNet peering is non-transitive by default. To enable A to communicate with C, you must either peer A and C directly, or use a hub-and-spoke topology with routing through a network virtual appliance.",
+    "options": [
+      {"label": "A", "text": "Yes, peering is automatically transitive", "isCorrect": false},
+      {"label": "B", "text": "No, you must peer VNet A and C directly or use gateway transit", "isCorrect": true},
+      {"label": "C", "text": "Yes, but only if all VNets are in the same region", "isCorrect": false},
+      {"label": "D", "text": "Yes, but only for HTTP traffic", "isCorrect": false}
+    ],
+    "tags": ["networking", "vnet-peering", "transitivity", "architecture"]
+  },
+  {
+    "domain": "NETWORKING",
+    "difficulty": "EASY",
+    "qtype": "SINGLE",
+    "stem": "Which Azure service provides DNS hosting for your domain names?",
+    "explanation": "Azure DNS provides name resolution using Microsoft Azure infrastructure and allows you to manage your DNS records using Azure tools and credentials.",
+    "options": [
+      {"label": "A", "text": "Azure Traffic Manager", "isCorrect": false},
+      {"label": "B", "text": "Azure DNS", "isCorrect": true},
+      {"label": "C", "text": "Azure Load Balancer", "isCorrect": false},
+      {"label": "D", "text": "Azure Front Door", "isCorrect": false}
+    ],
+    "tags": ["networking", "dns", "name-resolution"]
+  },
+  {
+    "domain": "NETWORKING",
+    "difficulty": "MEDIUM",
+    "qtype": "MULTI",
+    "stem": "What are valid use cases for Azure Load Balancer? (Choose all that apply)",
+    "explanation": "Azure Load Balancer distributes traffic across VMs in the same region, provides high availability for applications, and supports both inbound and outbound scenarios. It doesn't provide content-based routing.",
+    "options": [
+      {"label": "A", "text": "Distribute traffic across VMs in a region", "isCorrect": true},
+      {"label": "B", "text": "Provide high availability for applications", "isCorrect": true},
+      {"label": "C", "text": "Load balance outbound internet connections", "isCorrect": true},
+      {"label": "D", "text": "Route based on URL path", "isCorrect": false}
+    ],
+    "tags": ["networking", "load-balancer", "traffic-distribution", "high-availability"]
+  },
+  {
+    "domain": "NETWORKING",
+    "difficulty": "EASY",
+    "qtype": "YESNO",
+    "stem": "Can Azure Application Gateway perform SSL termination?",
+    "explanation": "Yes, Application Gateway can decrypt SSL/TLS traffic at the gateway (SSL termination), reducing the encryption overhead on backend servers and enabling inspection of encrypted traffic.",
+    "options": [
+      {"label": "A", "text": "Yes", "isCorrect": true},
+      {"label": "B", "text": "No", "isCorrect": false}
+    ],
+    "tags": ["networking", "application-gateway", "ssl", "security"]
+  },
+  {
+    "domain": "NETWORKING",
+    "difficulty": "MEDIUM",
+    "qtype": "SINGLE",
+    "stem": "What is the primary difference between Azure Load Balancer and Azure Application Gateway?",
+    "explanation": "Azure Load Balancer operates at Layer 4 (Transport) and distributes traffic based on IP/port. Application Gateway operates at Layer 7 (Application) and can route based on HTTP attributes like URL path or host headers.",
+    "options": [
+      {"label": "A", "text": "Load Balancer is for internal traffic only", "isCorrect": false},
+      {"label": "B", "text": "Load Balancer is Layer 4, Application Gateway is Layer 7", "isCorrect": true},
+      {"label": "C", "text": "Application Gateway doesn't support SSL", "isCorrect": false},
+      {"label": "D", "text": "Load Balancer is more expensive", "isCorrect": false}
+    ],
+    "tags": ["networking", "load-balancer", "application-gateway", "osi-layers"]
+  },
+  {
+    "domain": "NETWORKING",
+    "difficulty": "HARD",
+    "qtype": "SINGLE",
+    "stem": "Your application requires a globally distributed load balancing solution with automatic failover and path-based routing. Which service should you use?",
+    "explanation": "Azure Front Door is a global, scalable entry point that uses Microsoft's global edge network to provide fast, secure, and scalable web application delivery with path-based routing and automatic failover.",
+    "options": [
+      {"label": "A", "text": "Azure Load Balancer", "isCorrect": false},
+      {"label": "B", "text": "Azure Application Gateway", "isCorrect": false},
+      {"label": "C", "text": "Azure Traffic Manager", "isCorrect": false},
+      {"label": "D", "text": "Azure Front Door", "isCorrect": true}
+    ],
+    "tags": ["networking", "front-door", "global-load-balancing", "cdn"]
+  },
+  {
+    "domain": "NETWORKING",
+    "difficulty": "MEDIUM",
+    "qtype": "YESNO",
+    "stem": "Does VNet peering consume bandwidth and incur data transfer charges?",
+    "explanation": "Yes, while VNet peering uses Azure's backbone network for optimal performance, data transfer across peered VNets incurs charges, especially for global VNet peering across regions.",
+    "options": [
+      {"label": "A", "text": "Yes", "isCorrect": true},
+      {"label": "B", "text": "No", "isCorrect": false}
+    ],
+    "tags": ["networking", "vnet-peering", "cost", "bandwidth"]
+  },
+  {
+    "domain": "NETWORKING",
+    "difficulty": "EASY",
+    "qtype": "SINGLE",
+    "stem": "Which Azure service provides DDoS protection for Azure resources?",
+    "explanation": "Azure DDoS Protection provides enhanced DDoS mitigation capabilities for resources deployed in virtual networks. Basic protection is enabled by default, while Standard tier offers advanced features.",
+    "options": [
+      {"label": "A", "text": "Azure Firewall", "isCorrect": false},
+      {"label": "B", "text": "Azure DDoS Protection", "isCorrect": true},
+      {"label": "C", "text": "Network Security Groups", "isCorrect": false},
+      {"label": "D", "text": "Azure Bastion", "isCorrect": false}
+    ],
+    "tags": ["networking", "ddos", "security", "protection"]
+  },
+  {
+    "domain": "NETWORKING",
+    "difficulty": "HARD",
+    "qtype": "MULTI",
+    "stem": "You need to securely connect your on-premises network to Azure. Which solutions can you use? (Choose all that apply)",
+    "explanation": "Site-to-Site VPN connects over internet with IPsec tunnel. ExpressRoute provides private connectivity. Point-to-Site VPN is for individual clients. VNet peering is only for VNet-to-VNet within Azure.",
+    "options": [
+      {"label": "A", "text": "Site-to-Site VPN", "isCorrect": true},
+      {"label": "B", "text": "ExpressRoute", "isCorrect": true},
+      {"label": "C", "text": "Point-to-Site VPN", "isCorrect": true},
+      {"label": "D", "text": "VNet Peering", "isCorrect": false}
+    ],
+    "tags": ["networking", "vpn", "expressroute", "hybrid-connectivity"]
+  },
+  {
+    "domain": "NETWORKING",
+    "difficulty": "MEDIUM",
+    "qtype": "SINGLE",
+    "stem": "What is the purpose of Azure Bastion?",
+    "explanation": "Azure Bastion provides secure RDP and SSH connectivity to VMs directly through the Azure portal over SSL, without exposing public IP addresses on VMs or needing a VPN client.",
+    "options": [
+      {"label": "A", "text": "To host web applications", "isCorrect": false},
+      {"label": "B", "text": "To provide secure RDP/SSH access to VMs without public IPs", "isCorrect": true},
+      {"label": "C", "text": "To distribute network traffic", "isCorrect": false},
+      {"label": "D", "text": "To connect on-premises networks to Azure", "isCorrect": false}
+    ],
+    "tags": ["networking", "bastion", "security", "remote-access"]
+  },
+  {
+    "domain": "NETWORKING",
+    "difficulty": "EASY",
+    "qtype": "YESNO",
+    "stem": "Can you apply a Network Security Group to both a subnet and a network interface?",
+    "explanation": "Yes, NSGs can be associated with either subnets or individual network interfaces (or both). When applied to both, traffic is evaluated against both NSG rules in sequence.",
+    "options": [
+      {"label": "A", "text": "Yes", "isCorrect": true},
+      {"label": "B", "text": "No", "isCorrect": false}
+    ],
+    "tags": ["networking", "nsg", "security", "architecture"]
+  },
+  {
+    "domain": "NETWORKING",
+    "difficulty": "MEDIUM",
+    "qtype": "SINGLE",
+    "stem": "You need to route traffic from your VNet through a third-party firewall appliance before reaching the internet. What should you configure?",
+    "explanation": "A User Defined Route (UDR) with a route to 0.0.0.0/0 pointing to the firewall appliance's IP as the next hop will force all internet-bound traffic through the firewall.",
+    "options": [
+      {"label": "A", "text": "Network Security Group", "isCorrect": false},
+      {"label": "B", "text": "Service Endpoint", "isCorrect": false},
+      {"label": "C", "text": "User Defined Route", "isCorrect": true},
+      {"label": "D", "text": "VNet Peering", "isCorrect": false}
+    ],
+    "tags": ["networking", "udr", "nva", "routing"]
+  },
+  {
+    "domain": "NETWORKING",
+    "difficulty": "HARD",
+    "qtype": "SINGLE",
+    "stem": "Your company requires that traffic to Azure Storage never traverse the public internet. Which feature should you implement?",
+    "explanation": "Private Endpoints assign a private IP from your VNet to the storage account, ensuring traffic stays on the Microsoft backbone network and never traverses the public internet.",
+    "options": [
+      {"label": "A", "text": "Service Endpoint", "isCorrect": false},
+      {"label": "B", "text": "Private Endpoint", "isCorrect": true},
+      {"label": "C", "text": "VNet Peering", "isCorrect": false},
+      {"label": "D", "text": "ExpressRoute", "isCorrect": false}
+    ],
+    "tags": ["networking", "private-endpoint", "security", "storage"]
+  },
+  {
+    "domain": "NETWORKING",
+    "difficulty": "EASY",
+    "qtype": "SINGLE",
+    "stem": "Which protocol does Azure VPN Gateway use for Site-to-Site connections?",
+    "explanation": "Azure VPN Gateway uses IPsec/IKE (Internet Key Exchange) protocols to establish secure Site-to-Site VPN tunnels between on-premises networks and Azure.",
+    "options": [
+      {"label": "A", "text": "SSL/TLS", "isCorrect": false},
+      {"label": "B", "text": "IPsec/IKE", "isCorrect": true},
+      {"label": "C", "text": "SSH", "isCorrect": false},
+      {"label": "D", "text": "PPTP", "isCorrect": false}
+    ],
+    "tags": ["networking", "vpn", "protocols", "site-to-site"]
+  },
+  {
+    "domain": "NETWORKING",
+    "difficulty": "MEDIUM",
+    "qtype": "MULTI",
+    "stem": "What are the benefits of using Azure ExpressRoute compared to Site-to-Site VPN? (Choose all that apply)",
+    "explanation": "ExpressRoute provides private connectivity (doesn't traverse internet), higher bandwidth options, and lower latency through dedicated connections. However, it's more expensive than VPN.",
+    "options": [
+      {"label": "A", "text": "Private connectivity not over the internet", "isCorrect": true},
+      {"label": "B", "text": "Higher bandwidth options", "isCorrect": true},
+      {"label": "C", "text": "Lower and more predictable latency", "isCorrect": true},
+      {"label": "D", "text": "Lower cost", "isCorrect": false}
+    ],
+    "tags": ["networking", "expressroute", "vpn", "connectivity"]
+  },
+  {
+    "domain": "MONITOR_MAINTAIN",
+    "difficulty": "EASY",
+    "qtype": "SINGLE",
+    "stem": "Which Azure service collects and analyzes telemetry data from Azure resources?",
+    "explanation": "Azure Monitor is the comprehensive solution for collecting, analyzing, and acting on telemetry from cloud and on-premises environments to maximize performance and availability.",
+    "options": [
+      {"label": "A", "text": "Azure Advisor", "isCorrect": false},
+      {"label": "B", "text": "Azure Monitor", "isCorrect": true},
+      {"label": "C", "text": "Azure Security Center", "isCorrect": false},
+      {"label": "D", "text": "Azure Policy", "isCorrect": false}
+    ],
+    "tags": ["monitor", "azure-monitor", "telemetry", "basics"]
+  },
+  {
+    "domain": "MONITOR_MAINTAIN",
+    "difficulty": "MEDIUM",
+    "qtype": "SINGLE",
+    "stem": "You need to receive an email notification when a VM's CPU usage exceeds 80% for 5 minutes. What should you configure?",
+    "explanation": "Azure Monitor Alerts can trigger notifications based on metric thresholds. You would create a metric alert rule with an action group configured to send email notifications.",
+    "options": [
+      {"label": "A", "text": "Azure Policy", "isCorrect": false},
+      {"label": "B", "text": "Azure Monitor Alert Rule", "isCorrect": true},
+      {"label": "C", "text": "Azure Automation runbook", "isCorrect": false},
+      {"label": "D", "text": "Azure Logic App", "isCorrect": false}
+    ],
+    "tags": ["monitor", "alerts", "notifications", "metrics"]
+  },
+  {
+    "domain": "MONITOR_MAINTAIN",
+    "difficulty": "HARD",
+    "qtype": "MULTI",
+    "stem": "Which data types can Azure Monitor collect? (Choose all that apply)",
+    "explanation": "Azure Monitor collects metrics (numerical time-series data), logs (text-based events), traces (distributed tracing), and changes (Azure Change Analysis). It doesn't collect network packets directly.",
+    "options": [
+      {"label": "A", "text": "Metrics", "isCorrect": true},
+      {"label": "B", "text": "Logs", "isCorrect": true},
+      {"label": "C", "text": "Distributed traces", "isCorrect": true},
+      {"label": "D", "text": "Network packets", "isCorrect": false}
+    ],
+    "tags": ["monitor", "data-types", "metrics", "logs"]
+  },
+  {
+    "domain": "MONITOR_MAINTAIN",
+    "difficulty": "EASY",
+    "qtype": "YESNO",
+    "stem": "Can you query Azure Monitor Logs using Kusto Query Language (KQL)?",
+    "explanation": "Yes, Azure Monitor Logs uses Kusto Query Language (KQL) for querying log data. KQL is a powerful query language for analyzing large volumes of data.",
+    "options": [
+      {"label": "A", "text": "Yes", "isCorrect": true},
+      {"label": "B", "text": "No", "isCorrect": false}
+    ],
+    "tags": ["monitor", "logs", "kql", "queries"]
+  },
+  {
+    "domain": "MONITOR_MAINTAIN",
+    "difficulty": "MEDIUM",
+    "qtype": "SINGLE",
+    "stem": "What is the retention period for metrics in Azure Monitor by default?",
+    "explanation": "Platform metrics in Azure Monitor are retained for 93 days by default. For longer retention, you can archive metrics to a Log Analytics workspace or storage account.",
+    "options": [
+      {"label": "A", "text": "30 days", "isCorrect": false},
+      {"label": "B", "text": "60 days", "isCorrect": false},
+      {"label": "C", "text": "93 days", "isCorrect": true},
+      {"label": "D", "text": "365 days", "isCorrect": false}
+    ],
+    "tags": ["monitor", "metrics", "retention", "storage"]
+  },
+  {
+    "domain": "MONITOR_MAINTAIN",
+    "difficulty": "HARD",
+    "qtype": "SINGLE",
+    "stem": "You need to analyze security events across multiple Azure subscriptions and correlate them with threat intelligence. Which service combination should you use?",
+    "explanation": "Microsoft Sentinel is Azure's cloud-native SIEM that integrates with Azure Monitor to collect, detect, investigate, and respond to threats across the enterprise, including threat intelligence integration.",
+    "options": [
+      {"label": "A", "text": "Azure Monitor Logs and Azure Security Center", "isCorrect": false},
+      {"label": "B", "text": "Microsoft Sentinel and Azure Monitor", "isCorrect": true},
+      {"label": "C", "text": "Azure Advisor and Azure Policy", "isCorrect": false},
+      {"label": "D", "text": "Log Analytics and Azure Backup", "isCorrect": false}
+    ],
+    "tags": ["monitor", "sentinel", "siem", "security"]
+  },
+  {
+    "domain": "MONITOR_MAINTAIN",
+    "difficulty": "EASY",
+    "qtype": "SINGLE",
+    "stem": "Which Azure service provides personalized recommendations to optimize your Azure deployments?",
+    "explanation": "Azure Advisor analyzes your resource configuration and usage telemetry to provide personalized recommendations for cost, security, reliability, operational excellence, and performance.",
+    "options": [
+      {"label": "A", "text": "Azure Monitor", "isCorrect": false},
+      {"label": "B", "text": "Azure Advisor", "isCorrect": true},
+      {"label": "C", "text": "Azure Policy", "isCorrect": false},
+      {"label": "D", "text": "Azure Cost Management", "isCorrect": false}
+    ],
+    "tags": ["monitor", "advisor", "recommendations", "optimization"]
+  },
+  {
+    "domain": "MONITOR_MAINTAIN",
+    "difficulty": "MEDIUM",
+    "qtype": "MULTI",
+    "stem": "Which actions can be triggered by Azure Monitor action groups? (Choose all that apply)",
+    "explanation": "Action groups can send emails, SMS, execute Azure Functions, call webhooks, and create ITSM tickets. They cannot directly modify Azure resources or execute PowerShell scripts (though Functions/webhooks can).",
+    "options": [
+      {"label": "A", "text": "Send email notification", "isCorrect": true},
+      {"label": "B", "text": "Execute Azure Function", "isCorrect": true},
+      {"label": "C", "text": "Call webhook", "isCorrect": true},
+      {"label": "D", "text": "Directly modify Azure resources", "isCorrect": false}
+    ],
+    "tags": ["monitor", "action-groups", "alerts", "automation"]
+  },
+  {
+    "domain": "MONITOR_MAINTAIN",
+    "difficulty": "EASY",
+    "qtype": "YESNO",
+    "stem": "Can Azure Backup protect Azure Virtual Machines?",
+    "explanation": "Yes, Azure Backup provides a simple, secure, and cost-effective solution to back up Azure VMs with application-consistent backups and support for encrypted VMs.",
+    "options": [
+      {"label": "A", "text": "Yes", "isCorrect": true},
+      {"label": "B", "text": "No", "isCorrect": false}
+    ],
+    "tags": ["monitor", "backup", "vms", "data-protection"]
+  },
+  {
+    "domain": "MONITOR_MAINTAIN",
+    "difficulty": "MEDIUM",
+    "qtype": "SINGLE",
+    "stem": "What is the default retention period for Recovery Services vault backups?",
+    "explanation": "While configurable, Azure Backup for VMs typically defaults to retaining recovery points for 30 days unless you specify a different retention policy in your backup policy.",
+    "options": [
+      {"label": "A", "text": "7 days", "isCorrect": false},
+      {"label": "B", "text": "30 days", "isCorrect": true},
+      {"label": "C", "text": "90 days", "isCorrect": false},
+      {"label": "D", "text": "365 days", "isCorrect": false}
+    ],
+    "tags": ["monitor", "backup", "retention", "recovery-services"]
+  },
+  {
+    "domain": "MONITOR_MAINTAIN",
+    "difficulty": "HARD",
+    "qtype": "SINGLE",
+    "stem": "Your organization requires a disaster recovery solution with RPO of 15 minutes and RTO of 4 hours for critical VMs. Which Azure service should you use?",
+    "explanation": "Azure Site Recovery provides disaster recovery with continuous replication (RPO as low as 30 seconds for Azure-to-Azure), automated failover, and recovery plans to meet stringent RPO/RTO requirements.",
+    "options": [
+      {"label": "A", "text": "Azure Backup", "isCorrect": false},
+      {"label": "B", "text": "Azure Site Recovery", "isCorrect": true},
+      {"label": "C", "text": "Geo-redundant storage", "isCorrect": false},
+      {"label": "D", "text": "Availability Zones", "isCorrect": false}
+    ],
+    "tags": ["monitor", "site-recovery", "disaster-recovery", "business-continuity"]
+  },
+  {
+    "domain": "MONITOR_MAINTAIN",
+    "difficulty": "MEDIUM",
+    "qtype": "YESNO",
+    "stem": "Can you use Azure Monitor to collect logs from on-premises servers?",
+    "explanation": "Yes, by installing the Log Analytics agent (or Azure Monitor agent) on on-premises servers, you can collect logs and send them to Azure Monitor Logs for centralized monitoring.",
+    "options": [
+      {"label": "A", "text": "Yes", "isCorrect": true},
+      {"label": "B", "text": "No", "isCorrect": false}
+    ],
+    "tags": ["monitor", "hybrid", "on-premises", "agents"]
+  },
+  {
+    "domain": "MONITOR_MAINTAIN",
+    "difficulty": "EASY",
+    "qtype": "SINGLE",
+    "stem": "Which Azure service should you use to automate repetitive tasks like starting and stopping VMs on a schedule?",
+    "explanation": "Azure Automation provides runbooks that can execute PowerShell or Python scripts on a schedule, enabling automation of repetitive operational tasks.",
+    "options": [
+      {"label": "A", "text": "Azure Logic Apps", "isCorrect": false},
+      {"label": "B", "text": "Azure Automation", "isCorrect": true},
+      {"label": "C", "text": "Azure Functions", "isCorrect": false},
+      {"label": "D", "text": "Azure Monitor", "isCorrect": false}
+    ],
+    "tags": ["monitor", "automation", "runbooks", "scheduling"]
+  },
+  {
+    "domain": "MONITOR_MAINTAIN",
+    "difficulty": "HARD",
+    "qtype": "MULTI",
+    "stem": "You need to implement a comprehensive monitoring solution for a multi-tier web application. Which Azure Monitor features should you use? (Choose all that apply)",
+    "explanation": "Application Insights provides APM for application performance. Log Analytics collects and analyzes logs. Metrics track resource performance. Container Insights monitors containerized apps. Network Watcher is for network diagnostics.",
+    "options": [
+      {"label": "A", "text": "Application Insights for application performance", "isCorrect": true},
+      {"label": "B", "text": "Log Analytics for centralized logging", "isCorrect": true},
+      {"label": "C", "text": "Metrics for resource performance", "isCorrect": true},
+      {"label": "D", "text": "Network Watcher for application monitoring", "isCorrect": false}
+    ],
+    "tags": ["monitor", "application-insights", "logs", "metrics"]
+  },
+  {
+    "domain": "MONITOR_MAINTAIN",
+    "difficulty": "MEDIUM",
+    "qtype": "SINGLE",
+    "stem": "What is the difference between Azure Backup and Azure Site Recovery?",
+    "explanation": "Azure Backup focuses on data protection with point-in-time recovery from backups. Azure Site Recovery provides disaster recovery with continuous replication and near-real-time failover capabilities.",
+    "options": [
+      {"label": "A", "text": "They are the same service", "isCorrect": false},
+      {"label": "B", "text": "Backup is for data protection, Site Recovery is for disaster recovery", "isCorrect": true},
+      {"label": "C", "text": "Site Recovery is only for on-premises servers", "isCorrect": false},
+      {"label": "D", "text": "Backup is more expensive", "isCorrect": false}
+    ],
+    "tags": ["monitor", "backup", "site-recovery", "disaster-recovery"]
+  },
+  {
+    "domain": "IDENTITY_GOVERNANCE",
+    "difficulty": "MEDIUM",
+    "qtype": "SINGLE",
+    "stem": "You need to ensure that a specific user cannot delete any resources in a resource group, even if they have Contributor role. What should you configure?",
+    "explanation": "A CanNotDelete resource lock prevents deletion of resources regardless of RBAC permissions. Even users with Owner or Contributor roles cannot delete locked resources until the lock is removed.",
+    "options": [
+      {"label": "A", "text": "Remove the Contributor role", "isCorrect": false},
+      {"label": "B", "text": "Apply a CanNotDelete resource lock", "isCorrect": true},
+      {"label": "C", "text": "Configure an Azure Policy with Deny effect", "isCorrect": false},
+      {"label": "D", "text": "Create a custom RBAC role without delete permission", "isCorrect": false}
+    ],
+    "tags": ["governance", "locks", "rbac", "protection"]
+  },
+  {
+    "domain": "IDENTITY_GOVERNANCE",
+    "difficulty": "HARD",
+    "qtype": "MULTI",
+    "stem": "Which Azure AD join types are available for Windows devices? (Choose all that apply)",
+    "explanation": "Windows devices can be Azure AD joined (cloud-only), Hybrid Azure AD joined (on-premises AD + Azure AD), or Azure AD registered (BYOD). Domain joined is traditional on-premises only.",
+    "options": [
+      {"label": "A", "text": "Azure AD joined", "isCorrect": true},
+      {"label": "B", "text": "Hybrid Azure AD joined", "isCorrect": true},
+      {"label": "C", "text": "Azure AD registered", "isCorrect": true},
+      {"label": "D", "text": "Domain joined only", "isCorrect": false}
+    ],
+    "tags": ["identity", "device-management", "azure-ad-join"]
+  },
+  {
+    "domain": "STORAGE",
+    "difficulty": "MEDIUM",
+    "qtype": "SINGLE",
+    "stem": "Which Azure Storage redundancy option provides read access to the secondary region during normal operations?",
+    "explanation": "Read-Access Geo-Redundant Storage (RA-GRS) and Read-Access Geo-Zone-Redundant Storage (RA-GZRS) provide read-only access to data in the secondary region during normal operations.",
+    "options": [
+      {"label": "A", "text": "Geo-redundant storage (GRS)", "isCorrect": false},
+      {"label": "B", "text": "Read-access geo-redundant storage (RA-GRS)", "isCorrect": true},
+      {"label": "C", "text": "Zone-redundant storage (ZRS)", "isCorrect": false},
+      {"label": "D", "text": "Locally redundant storage (LRS)", "isCorrect": false}
+    ],
+    "tags": ["storage", "redundancy", "geo-replication", "read-access"]
+  },
+  {
+    "domain": "STORAGE",
+    "difficulty": "HARD",
+    "qtype": "SINGLE",
+    "stem": "Your application requires storage with consistent single-digit millisecond latency and high IOPS. Which storage solution should you choose?",
+    "explanation": "Premium SSD v2 or Ultra Disk provide the lowest latency and highest IOPS for demanding applications. Premium SSD (original) also offers excellent performance for most workloads.",
+    "options": [
+      {"label": "A", "text": "Standard HDD", "isCorrect": false},
+      {"label": "B", "text": "Standard SSD", "isCorrect": false},
+      {"label": "C", "text": "Premium SSD", "isCorrect": true},
+      {"label": "D", "text": "Azure Files", "isCorrect": false}
+    ],
+    "tags": ["storage", "performance", "latency", "premium"]
+  },
+  {
+    "domain": "COMPUTE",
+    "difficulty": "MEDIUM",
+    "qtype": "SINGLE",
+    "stem": "Which VM series is optimized for memory-intensive workloads like SQL Server or SAP HANA?",
+    "explanation": "The M-series and E-series VMs are memory-optimized with high memory-to-CPU ratios, designed for large in-memory databases, caching, and analytics workloads.",
+    "options": [
+      {"label": "A", "text": "B-series (Burstable)", "isCorrect": false},
+      {"label": "B", "text": "D-series (General purpose)", "isCorrect": false},
+      {"label": "C", "text": "E-series (Memory optimized)", "isCorrect": true},
+      {"label": "D", "text": "F-series (Compute optimized)", "isCorrect": false}
+    ],
+    "tags": ["compute", "vm-series", "memory-optimized", "performance"]
+  },
+  {
+    "domain": "COMPUTE",
+    "difficulty": "EASY",
+    "qtype": "YESNO",
+    "stem": "Can you convert an existing VM from unmanaged disks to managed disks?",
+    "explanation": "Yes, Azure allows you to convert VMs from unmanaged disks to managed disks. The VM must be stopped (deallocated) during the conversion process.",
+    "options": [
+      {"label": "A", "text": "Yes", "isCorrect": true},
+      {"label": "B", "text": "No", "isCorrect": false}
+    ],
+    "tags": ["compute", "disks", "migration", "managed-disks"]
+  },
+  {
+    "domain": "NETWORKING",
+    "difficulty": "MEDIUM",
+    "qtype": "SINGLE",
+    "stem": "What is the maximum number of VNet peerings a single VNet can have?",
+    "explanation": "A single VNet can have up to 500 VNet peerings (regional and global combined), though this limit can be increased by contacting support in some cases.",
+    "options": [
+      {"label": "A", "text": "50", "isCorrect": false},
+      {"label": "B", "text": "100", "isCorrect": false},
+      {"label": "C", "text": "500", "isCorrect": true},
+      {"label": "D", "text": "Unlimited", "isCorrect": false}
+    ],
+    "tags": ["networking", "vnet-peering", "limits", "scale"]
+  },
+  {
+    "domain": "NETWORKING",
+    "difficulty": "HARD",
+    "qtype": "SINGLE",
+    "stem": "You need to inspect and filter encrypted traffic (HTTPS) at Layer 7 before it reaches your web servers. Which Azure service should you use?",
+    "explanation": "Application Gateway with Web Application Firewall can perform SSL termination to decrypt traffic, inspect and filter it using WAF rules, then re-encrypt and forward to backend servers.",
+    "options": [
+      {"label": "A", "text": "Azure Load Balancer", "isCorrect": false},
+      {"label": "B", "text": "Azure Firewall", "isCorrect": false},
+      {"label": "C", "text": "Application Gateway with WAF", "isCorrect": true},
+      {"label": "D", "text": "Network Security Group", "isCorrect": false}
+    ],
+    "tags": ["networking", "application-gateway", "waf", "ssl-termination"]
+  },
+  {
+    "domain": "MONITOR_MAINTAIN",
+    "difficulty": "MEDIUM",
+    "qtype": "SINGLE",
+    "stem": "You need to track changes to Azure resources over time, including who made changes and when. Which feature should you use?",
+    "explanation": "Azure Activity Log records all control plane operations (create, update, delete) on Azure resources, including who initiated the action, when it occurred, and the result.",
+    "options": [
+      {"label": "A", "text": "Azure Monitor Metrics", "isCorrect": false},
+      {"label": "B", "text": "Azure Activity Log", "isCorrect": true},
+      {"label": "C", "text": "Azure Advisor", "isCorrect": false},
+      {"label": "D", "text": "Resource Health", "isCorrect": false}
+    ],
+    "tags": ["monitor", "activity-log", "audit", "compliance"]
+  }
+]

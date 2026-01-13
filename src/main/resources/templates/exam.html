@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question [[${currentIndex + 1}]] - AZ-104 Simulator</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="exam-container">
+        <header class="exam-header">
+            <div class="header-left">
+                <h2 th:text="${attempt.mode} + ' Mode'">Mode</h2>
+                <span class="question-counter">
+                    Question <span th:text="${currentIndex + 1}">1</span> of
+                    <span th:text="${attempt.totalQuestions}">50</span>
+                </span>
+            </div>
+
+            <div class="header-center" th:if="${attempt.mode.name() == 'EXAM' && config.timeLimitMinutes != null}">
+                <div class="timer" id="timer" th:attr="data-time-limit=${config.timeLimitMinutes * 60}">
+                    <span id="timer-display">--:--</span>
+                </div>
+            </div>
+
+            <div class="header-right">
+                <span class="progress-info">
+                    Answered: <strong th:text="${status.answeredCount}">0</strong> |
+                    Marked: <strong th:text="${status.markedCount}">0</strong>
+                </span>
+            </div>
+        </header>
+
+        <div class="exam-body">
+            <aside class="sidebar">
+                <h3>Questions</h3>
+                <div class="question-grid">
+                    <div th:each="i : ${#numbers.sequence(0, attempt.totalQuestions - 1)}"
+                         class="question-number"
+                         th:classappend="${i == currentIndex} ? 'current' : ''"
+                         th:attr="data-index=${i}">
+                        <button type="button" class="question-btn"
+                                th:onclick="'navigateToQuestion(' + ${i} + ')'">
+                            [[${i + 1}]]
+                        </button>
+                    </div>
+                </div>
+
+                <div class="sidebar-actions">
+                    <a th:href="@{/attempt/{id}/review(id=${attempt.id})}" class="btn btn-secondary">
+                        Review All
+                    </a>
+                </div>
+
+                <div class="legend">
+                    <h4>Legend:</h4>
+                    <div class="legend-item">
+                        <span class="legend-box answered"></span> Answered
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-box marked"></span> Marked
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-box unanswered"></span> Not Answered
+                    </div>
+                </div>
+            </aside>
+
+            <main class="question-content">
+                <div class="question-header">
+                    <div class="domain-badge" th:text="${question.domain.displayName}">Domain</div>
+                    <div class="difficulty-badge" th:classappend="${question.difficulty.name().toLowerCase()}"
+                         th:text="${question.difficulty}">Difficulty</div>
+                </div>
+
+                <div class="question-stem" th:utext="${question.stem}">
+                    Question text goes here
+                </div>
+
+                <form id="answer-form" class="options-form">
+                    <input type="hidden" id="attemptId" th:value="${attempt.id}">
+                    <input type="hidden" id="questionId" th:value="${question.id}">
+                    <input type="hidden" id="questionType" th:value="${question.qtype}">
+
+                    <div class="options">
+                        <div th:each="option : ${question.options}" class="option-item">
+                            <label>
+                                <input th:if="${question.qtype.name() == 'SINGLE' || question.qtype.name() == 'YESNO'}"
+                                       type="radio"
+                                       name="selectedOption"
+                                       th:value="${option.id}"
+                                       th:checked="${question.selectedOptionIds != null && #lists.contains(question.selectedOptionIds, option.id)}">
+
+                                <input th:if="${question.qtype.name() == 'MULTI'}"
+                                       type="checkbox"
+                                       name="selectedOptions"
+                                       th:value="${option.id}"
+                                       th:checked="${question.selectedOptionIds != null && #lists.contains(question.selectedOptionIds, option.id)}">
+
+                                <span class="option-label" th:text="${option.label}">A</span>
+                                <span class="option-text" th:text="${option.text}">Option text</span>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+
+                <div th:if="${attempt.mode.name() == 'PRACTICE' && config.showExplanationsImmediately && question.answered}"
+                     class="explanation-box">
+                    <h4>Explanation:</h4>
+                    <p th:text="${question.explanation}">Explanation text</p>
+                </div>
+
+                <div class="question-actions">
+                    <div class="left-actions">
+                        <button th:if="${currentIndex > 0}"
+                                type="button"
+                                class="btn btn-secondary"
+                                th:onclick="'navigateToQuestion(' + ${currentIndex - 1} + ')'">
+                            Previous
+                        </button>
+                    </div>
+
+                    <div class="center-actions">
+                        <button type="button" id="markBtn" class="btn btn-warning"
+                                th:classappend="${question.marked} ? 'marked' : ''"
+                                onclick="toggleMark()">
+                            <span th:text="${question.marked ? 'Unmark' : 'Mark for Review'}">Mark</span>
+                        </button>
+                    </div>
+
+                    <div class="right-actions">
+                        <button th:if="${currentIndex < attempt.totalQuestions - 1}"
+                                type="button"
+                                class="btn btn-primary"
+                                th:onclick="'navigateToQuestion(' + ${currentIndex + 1} + ')'">
+                            Next
+                        </button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        const attemptId = /*[[${attempt.id}]]*/ '';
+        const questionId = /*[[${question.id}]]*/ 0;
+        const currentIndex = /*[[${currentIndex}]]*/ 0;
+        const isMarked = /*[[${question.marked}]]*/ false;
+        const timeLimitSeconds = /*[[${config.timeLimitMinutes != null ? config.timeLimitMinutes * 60 : 0}]]*/ 0;
+
+        let timerInterval;
+
+        // Initialize timer
+        if (timeLimitSeconds > 0) {
+            let remainingSeconds = timeLimitSeconds;
+            const timerDisplay = document.getElementById('timer-display');
+
+            function updateTimer() {
+                const minutes = Math.floor(remainingSeconds / 60);
+                const seconds = remainingSeconds % 60;
+                timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+                if (remainingSeconds <= 300) {
+                    timerDisplay.classList.add('warning');
+                }
+
+                if (remainingSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    alert('Time is up! The exam will now be submitted.');
+                    submitExam();
+                }
+
+                remainingSeconds--;
+            }
+
+            updateTimer();
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        // Auto-save answer when selection changes
+        document.getElementById('answer-form').addEventListener('change', function() {
+            saveAnswer();
+        });
+
+        function saveAnswer() {
+            const form = document.getElementById('answer-form');
+            const questionType = document.getElementById('questionType').value;
+            let selectedOptionIds = [];
+
+            if (questionType === 'SINGLE' || questionType === 'YESNO') {
+                const selected = form.querySelector('input[name="selectedOption"]:checked');
+                if (selected) {
+                    selectedOptionIds = [parseInt(selected.value)];
+                }
+            } else if (questionType === 'MULTI') {
+                const selected = form.querySelectorAll('input[name="selectedOptions"]:checked');
+                selectedOptionIds = Array.from(selected).map(el => parseInt(el.value));
+            }
+
+            const data = {
+                questionId: questionId,
+                selectedOptionIds: selectedOptionIds,
+                marked: isMarked
+            };
+
+            fetch(`/attempt/${attemptId}/answer`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+        }
+
+        function toggleMark() {
+            const newMarkedState = !isMarked;
+
+            const data = {
+                questionId: questionId,
+                selectedOptionIds: getSelectedOptions(),
+                marked: newMarkedState
+            };
+
+            fetch(`/attempt/${attemptId}/answer`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).then(() => {
+                location.reload();
+            });
+        }
+
+        function getSelectedOptions() {
+            const form = document.getElementById('answer-form');
+            const questionType = document.getElementById('questionType').value;
+            let selectedOptionIds = [];
+
+            if (questionType === 'SINGLE' || questionType === 'YESNO') {
+                const selected = form.querySelector('input[name="selectedOption"]:checked');
+                if (selected) {
+                    selectedOptionIds = [parseInt(selected.value)];
+                }
+            } else if (questionType === 'MULTI') {
+                const selected = form.querySelectorAll('input[name="selectedOptions"]:checked');
+                selectedOptionIds = Array.from(selected).map(el => parseInt(el.value));
+            }
+
+            return selectedOptionIds;
+        }
+
+        function navigateToQuestion(index) {
+            saveAnswer();
+            window.location.href = `/attempt/${attemptId}/question/${index}`;
+        }
+
+        function submitExam() {
+            window.location.href = `/attempt/${attemptId}/review`;
+        }
+    </script>
+</body>
+</html>

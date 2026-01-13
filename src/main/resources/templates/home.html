@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AZ-104 Exam Simulator</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>AZ-104 Microsoft Azure Administrator</h1>
+            <h2>Exam Simulator</h2>
+        </header>
+
+        <main class="main-content">
+            <div class="welcome-section">
+                <h3>Welcome to the AZ-104 Exam Simulator</h3>
+                <p>This simulator helps you prepare for the Microsoft Azure Administrator certification exam.</p>
+
+                <div class="stats-box">
+                    <div class="stat-item">
+                        <span class="stat-label">Total Questions:</span>
+                        <span class="stat-value" th:text="${totalQuestions}">0</span>
+                    </div>
+                    <div class="stat-breakdown">
+                        <h4>Questions by Domain:</h4>
+                        <ul>
+                            <li th:each="entry : ${countsByDomain}">
+                                <span th:text="${entry.key.displayName}">Domain</span>:
+                                <strong th:text="${entry.value}">0</strong>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mode-selection">
+                    <div class="mode-card">
+                        <h3>Practice Mode</h3>
+                        <p>Study at your own pace with immediate feedback and explanations.</p>
+                        <ul>
+                            <li>See explanations immediately</li>
+                            <li>No time limit</li>
+                            <li>Select specific domains</li>
+                            <li>Change answers</li>
+                        </ul>
+                        <a th:href="@{/config?mode=PRACTICE}" class="btn btn-primary">Start Practice</a>
+                    </div>
+
+                    <div class="mode-card">
+                        <h3>Exam Mode</h3>
+                        <p>Simulate the real exam experience with time limits and no feedback until the end.</p>
+                        <ul>
+                            <li>Timed exam (configurable)</li>
+                            <li>Mark questions for review</li>
+                            <li>No explanations until completion</li>
+                            <li>Realistic exam interface</li>
+                        </ul>
+                        <a th:href="@{/config?mode=EXAM}" class="btn btn-danger">Start Exam</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 AZ-104 Simulator | For educational purposes only</p>
+        </footer>
+    </div>
+</body>
+</html>

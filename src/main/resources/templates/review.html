@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review - AZ-104 Simulator</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Review Your Answers</h1>
+        </header>
+
+        <main class="main-content">
+            <div class="review-summary">
+                <div class="summary-box">
+                    <div class="summary-item">
+                        <span class="summary-label">Total Questions:</span>
+                        <span class="summary-value" th:text="${status.totalQuestions}">0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Answered:</span>
+                        <span class="summary-value" th:text="${status.answeredCount}">0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Not Answered:</span>
+                        <span class="summary-value warning" th:text="${status.unansweredCount}">0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Marked for Review:</span>
+                        <span class="summary-value" th:text="${status.markedCount}">0</span>
+                    </div>
+                </div>
+
+                <div th:if="${status.unansweredCount > 0}" class="warning-message">
+                    <strong>Warning:</strong> You have <span th:text="${status.unansweredCount}">0</span>
+                    unanswered question(s). Are you sure you want to submit?
+                </div>
+            </div>
+
+            <div class="review-actions">
+                <a th:href="@{/attempt/{id}/question/0(id=${attempt.id})}" class="btn btn-secondary">
+                    Back to Questions
+                </a>
+
+                <form th:action="@{/attempt/{id}/submit(id=${attempt.id})}" method="post" style="display: inline;"
+                      onsubmit="return confirm('Are you sure you want to submit? You cannot change answers after submission.');">
+                    <button type="submit" class="btn btn-primary btn-large">
+                        Submit Exam
+                    </button>
+                </form>
+            </div>
+
+            <div class="question-list">
+                <h3>All Questions</h3>
+                <div class="question-grid-review">
+                    <div th:each="i : ${#numbers.sequence(0, attempt.totalQuestions - 1)}"
+                         class="question-review-item">
+                        <a th:href="@{/attempt/{id}/question/{index}(id=${attempt.id}, index=${i})}"
+                           class="question-review-link">
+                            <span class="question-number-badge">[[${i + 1}]]</span>
+                            <span class="question-status-badge">Status</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
