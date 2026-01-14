@@ -397,54 +397,6 @@ sequenceDiagram
     Browser->>HistoryController: GET /history/{attemptId}/question/5
     Note over Browser,Database: Repeat above steps
 ```
-
----
-
-### Language Switch Sequence
-
-User changing interface language.
-
-```mermaid
-sequenceDiagram
-    actor User
-    participant Browser
-    participant LocaleController
-    participant LocaleInterceptor
-    participant QuestionService
-    participant MessageSource
-    
-    User->>Browser: Select "🇬🇧 English" from dropdown
-    Browser->>LocaleController: GET /locale/change?lang=en&redirect=/config
-    
-    LocaleController->>LocaleController: Parse locale "en"
-    LocaleController->>LocaleController: Set cookie lang=en (max-age 1 year)
-    LocaleController->>LocaleController: LocaleContextHolder.setLocale(Locale.EN)
-    LocaleController-->>Browser: Set-Cookie header with lang=en
-    LocaleController-->>Browser: Redirect to /config
-    
-    Browser->>Browser: Store cookie
-    Browser->>LocaleController: GET /config
-    Note over Browser: Cookie sent with request
-    
-    LocaleInterceptor->>LocaleInterceptor: preHandle(request)
-    LocaleInterceptor->>LocaleInterceptor: Read cookie lang value
-    LocaleInterceptor->>LocaleInterceptor: Set locale to EN
-    
-    LocaleController->>MessageSource: getMessage for config.title in EN
-    MessageSource->>MessageSource: Load messages_en.properties
-    MessageSource-->>LocaleController: Return "Configure Your"
-    
-    alt Rendering question content
-        LocaleController->>QuestionService: toDto with lang EN
-        QuestionService->>QuestionService: Select stem_en, explanation_en, text_en
-        QuestionService-->>LocaleController: QuestionDto (English content)
-    end
-    
-    LocaleController-->>Browser: Render page in English
-    
-    Note over Browser: All UI labels from messages_en.properties<br/>All question content from EN columns
-```
-
 ---
 
 ## Attempt State Machine
