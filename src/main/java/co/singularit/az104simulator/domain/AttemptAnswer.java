@@ -25,6 +25,9 @@ public class AttemptAnswer {
     @Column(name = "question_id", nullable = false)
     private Long questionId;
 
+    @Column(nullable = false)
+    private Integer position;
+
     @Column(name = "selected_option_ids_json", columnDefinition = "TEXT")
     private String selectedOptionIdsJson;
 

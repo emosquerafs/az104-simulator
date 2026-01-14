@@ -38,7 +38,11 @@ public class Attempt {
     @Column(name = "config_json", columnDefinition = "TEXT")
     private String configJson;
 
+    @Column(name = "session_id", length = 36)
+    private String sessionId;
+
     @OneToMany(mappedBy = "attempt", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("position ASC")
     private List<AttemptAnswer> answers = new ArrayList<>();
 
     @Column(name = "current_question_index")

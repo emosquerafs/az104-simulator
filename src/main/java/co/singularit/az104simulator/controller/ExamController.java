@@ -62,6 +62,20 @@ public class ExamController {
         Map<String, Object> status = attemptService.getAttemptStatus(attemptId);
         List<String> questionStates = attemptService.getQuestionStates(attemptId);
 
+        // Calculate remaining time for EXAM mode
+        if (attempt.getMode() == ExamMode.EXAM && config.getTimeLimitMinutes() != null) {
+            long elapsedSeconds = java.time.Duration.between(
+                attempt.getStartedAt(),
+                java.time.LocalDateTime.now()
+            ).getSeconds();
+
+            long totalSeconds = config.getTimeLimitMinutes() * 60L;
+            long remainingSeconds = Math.max(0, totalSeconds - elapsedSeconds);
+
+            model.addAttribute("remainingSeconds", remainingSeconds);
+            log.debug("Attempt {} - Elapsed: {}s, Remaining: {}s", attemptId, elapsedSeconds, remainingSeconds);
+        }
+
         model.addAttribute("attempt", attempt);
         model.addAttribute("question", question);
         model.addAttribute("currentIndex", index);

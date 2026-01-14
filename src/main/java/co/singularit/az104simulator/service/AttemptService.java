@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,8 @@ public class AttemptService {
     private final QuestionService questionService;
     private final ScoringService scoringService;
     private final ObjectMapper objectMapper;
+    private final co.singularit.az104simulator.repository.QuestionRepository questionRepository;
+    private final ExamSessionService examSessionService;
 
     @Transactional
     public Attempt createAttempt(ExamConfigDto config) {
@@ -48,13 +51,24 @@ public class AttemptService {
         distribution.put(Domain.NETWORKING, config.getNetworkingPercentage());
         distribution.put(Domain.MONITOR_MAINTAIN, config.getMonitorPercentage());
 
-        List<Question> questions = questionService.getRandomQuestionsWithDistribution(
-                domains,
-                config.getNumberOfQuestions(),
-                distribution
+        // Create ExamSession to guarantee unique questions
+        String locale = LocaleContextHolder.getLocale().getLanguage();
+        if (locale == null || locale.isEmpty()) {
+            locale = "es";
+        }
+        String sessionId = examSessionService.startSession(
+            config.getMode(),
+            config.getNumberOfQuestions(),
+            locale,
+            domains,
+            distribution
         );
 
-        attempt.setTotalQuestions(questions.size());
+        // Get question IDs from the session (guaranteed unique)
+        List<Long> questionIds = examSessionService.getSessionQuestionIds(sessionId);
+
+        attempt.setTotalQuestions(questionIds.size());
+        attempt.setSessionId(sessionId);
 
         try {
             String configJson = objectMapper.writeValueAsString(config);
@@ -65,17 +79,20 @@ public class AttemptService {
 
         attempt = attemptRepository.save(attempt);
 
-        // Create answer placeholders
-        for (Question question : questions) {
+        // Create answer placeholders with stable position field using session questions
+        int position = 0;
+        for (Long questionId : questionIds) {
             AttemptAnswer answer = new AttemptAnswer();
-            answer.setQuestionId(question.getId());
+            answer.setQuestionId(questionId);
+            answer.setPosition(position++);
             answer.setMarked(false);
             attempt.addAnswer(answer);
         }
 
         attemptRepository.save(attempt);
 
-        log.info("Created attempt {} with {} questions", attempt.getId(), questions.size());
+        log.info("Created attempt {} with session {} and {} unique questions (positions 0-{})",
+                 attempt.getId(), sessionId, questionIds.size(), questionIds.size() - 1);
         return attempt;
     }
 
@@ -88,7 +105,8 @@ public class AttemptService {
     @Transactional(readOnly = true)
     public List<Long> getQuestionIds(String attemptId) {
         Attempt attempt = getAttempt(attemptId);
-        return attempt.getAnswers().stream()
+        // Use ordered retrieval to guarantee stable order
+        return attemptAnswerRepository.findByAttemptOrderByPositionAsc(attempt).stream()
                 .map(AttemptAnswer::getQuestionId)
                 .collect(Collectors.toList());
     }
@@ -101,7 +119,8 @@ public class AttemptService {
     @Transactional(readOnly = true)
     public QuestionDto getQuestionForAttempt(String attemptId, int index, ExamMode mode, String lang) {
         Attempt attempt = getAttempt(attemptId);
-        List<AttemptAnswer> answers = attempt.getAnswers();
+        // Use ordered retrieval to guarantee stable index -> question mapping
+        List<AttemptAnswer> answers = attemptAnswerRepository.findByAttemptOrderByPositionAsc(attempt);
 
         if (index < 0 || index >= answers.size()) {
             throw new IllegalArgumentException("Invalid question index: " + index);
@@ -110,9 +129,8 @@ public class AttemptService {
         AttemptAnswer answer = answers.get(index);
         Long questionId = answer.getQuestionId();
 
-        Question question = questionService.getRandomQuestions(List.of(Domain.values()), 1000).stream()
-                .filter(q -> q.getId().equals(questionId))
-                .findFirst()
+        // Direct lookup by ID - much more efficient than filtering 1000 random questions
+        Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new IllegalArgumentException("Question not found: " + questionId));
 
         boolean includeCorrectAnswers = (mode == ExamMode.PRACTICE);
@@ -196,7 +214,8 @@ public class AttemptService {
     @Transactional(readOnly = true)
     public List<String> getQuestionStates(String attemptId) {
         Attempt attempt = getAttempt(attemptId);
-        List<AttemptAnswer> answers = attempt.getAnswers();
+        // Use ordered retrieval to guarantee states match question positions
+        List<AttemptAnswer> answers = attemptAnswerRepository.findByAttemptOrderByPositionAsc(attempt);
 
         return answers.stream()
                 .map(answer -> {
@@ -229,7 +248,8 @@ public class AttemptService {
 
         attemptRepository.save(attempt);
 
-        List<AttemptAnswer> answers = attemptAnswerRepository.findByAttempt(attempt);
+        // Use ordered retrieval for consistent results
+        List<AttemptAnswer> answers = attemptAnswerRepository.findByAttemptOrderByPositionAsc(attempt);
         return scoringService.calculateResults(attempt, answers);
     }
 
@@ -240,7 +260,8 @@ public class AttemptService {
             throw new IllegalStateException("Attempt is not completed yet");
         }
 
-        List<AttemptAnswer> answers = attemptAnswerRepository.findByAttempt(attempt);
+        // Use ordered retrieval for consistent results
+        List<AttemptAnswer> answers = attemptAnswerRepository.findByAttemptOrderByPositionAsc(attempt);
         return scoringService.calculateResults(attempt, answers);
     }
 

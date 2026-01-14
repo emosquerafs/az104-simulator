@@ -13,6 +13,8 @@ public interface AttemptAnswerRepository extends JpaRepository<AttemptAnswer, Lo
 
     List<AttemptAnswer> findByAttempt(Attempt attempt);
 
+    List<AttemptAnswer> findByAttemptOrderByPositionAsc(Attempt attempt);
+
     Optional<AttemptAnswer> findByAttemptAndQuestionId(Attempt attempt, Long questionId);
 
     long countByAttemptAndSelectedOptionIdsJsonIsNotNull(Attempt attempt);

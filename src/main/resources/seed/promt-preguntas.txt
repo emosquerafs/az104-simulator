@@ -1,45 +1,48 @@
-Necesito que generes un banco de preguntas para practicar AZ-104 (Microsoft Azure Administrator), pero con reglas estrictas.
+You are an AZ-104 question author. Create ORIGINAL questions aligned to Microsoft Learn/Azure Docs skills measured. Do NOT use dumps. Do NOT copy real exam items.
 
-IMPORTANTE (cumplimiento):
-- NO uses “dumps”.
-- Las preguntas deben ser ORIGINALES, pero alineadas a los objetivos oficiales (skills measured) y documentación oficial de Microsoft Learn/Azure docs.
-- Deben parecer “de certificación”: escenarios realistas, opciones plausibles, distractores creíbles, explicaciones técnicas.
+DELIVERABLE (must follow)
+- Your response must be the **exact contents of a single JSON file** (no markdown, no explanations, no code fences, no extra text).
+- The JSON must be directly saveable as: **az104_{DOMAIN}_{N}_bilingual.json** (I will copy/paste and save it, or download it if the tool supports file attachments).
+- Therefore: the first character of your output must be `[` and the last character must be `]`.
 
-OBJETIVO:
-Generar exactamente 100 preguntas del dominio: MONITOR_MAINTAIN - Monitor and maintain Azure resources
-Idioma: BILINGÜE (EN + ES) para stem, options y explanation.
-Formato: JSON puro (sin markdown), listo para guardar como archivo.
+GOAL
+Generate N={N} questions for DOMAIN={DOMAIN} (one of: IDENTITY_GOVERNANCE, STORAGE, COMPUTE, NETWORKING, MONITOR_MAINTAIN).
+Language: bilingual EN+ES for stem/options/explanation (UTF-8; keep accents and punctuation).
+Style: certification-like scenarios, realistic constraints, plausible distractors, short technical explanations.
 
+HARD QUALITY RULES (must pass)
+1) No duplicates:
+   - No repeated stem meaning. Keep an internal set of fingerprints:
+     fingerprint = normalize(stem.en) + '|' + sorted(correct option texts in EN).
+2) Domain coherence:
+   - Every option must be relevant to the same subtopic as the stem.
+   - Never mix unrelated services (e.g., DNS answers in a pure storage-account question) unless the scenario explicitly depends on that (e.g., private endpoint + private DNS zone).
+3) Anti-guessing:
+   - SINGLE/YESNO: correct label distribution across A–D must be roughly balanced (no label > 35%).
+   - MULTI: correct choices must NOT be always the first two. Vary 2–3 correct options and spread labels across A–F.
+   - Before final output, run a sanity test mentally:
+     - If a student always picks A (SINGLE) and the first two options (MULTI), expected score must be <= 35%.
+4) Difficulty:
+   - EASY: 1 concept, minimal constraints.
+   - MEDIUM: 2 constraints + one decision tradeoff.
+   - HARD: multi-step reasoning OR cross-feature nuance (limits/behavior) OR troubleshooting scenario.
+5) Explanations:
+   - Provide a short technical rationale why correct is correct and why the top distractor is wrong (EN+ES). No fluff.
 
-DOMINIOS válidos (elige uno en {DOMAIN}):
-- IDENTITY_GOVERNANCE
-- STORAGE
-- COMPUTE
-- NETWORKING
-- MONITOR_MAINTAIN
+DISTRIBUTION TARGETS
+- Difficulty: ~25% EASY, ~55% MEDIUM, ~20% HARD
+- Types: ~55% SINGLE, ~30% MULTI (2–3 correct), ~15% YESNO
+- Options:
+  - SINGLE: exactly 4 options (A–D), exactly 1 correct
+  - YESNO: 2 options (A=Yes, B=No) OR 4 options (A–D), but exactly 1 correct
+  - MULTI: 5–6 options (A–F), exactly 2 or 3 correct
 
-DISTRIBUCIÓN:
-- Dificultad: 25% EASY, 55% MEDIUM, 20% HARD (aproximado; ajusta si {N} no permite exacto).
-- Tipos de pregunta:
-  - 55% SINGLE (una correcta)
-  - 30% MULTI (2-3 correctas, selección múltiple)
-  - 15% YESNO (Sí/No)
-- Opciones:
-  - SINGLE/YESNO: 4 opciones (A-D) excepto YESNO que puede ser A-B (Yes/No) si el template lo permite.
-  - MULTI: 5-6 opciones (A-F) con 2-3 correctas.
+TAGS
+Use 3–5 tags per question, lowercase with hyphens, tied to subtopics.
+Examples for STORAGE: storage-account, replication-lrs-zrs-grs, access-tiers, lifecycle-management, sas, storage-firewall, private-endpoint, service-endpoint, azure-files, blob-versioning
 
-CONTENIDO (calidad):
-- Cada pregunta debe incluir:
-  - escenario breve (empresa, requerimiento, restricción)
-  - decisión técnica concreta (qué servicio/config/acción)
-  - opciones plausibles (evita opciones obvias “incorrectas”)
-  - explicación corta y técnica (EN y ES)
-  - tags relevantes (subtemas del dominio)
-- No uses nombres de clientes reales.
-- Evita números/licencias precios exactos que cambian; si usas cifras, que sean conceptuales.
-
-TEMPLATE JSON (OBLIGATORIO):
-Devuélveme un ARRAY JSON con objetos que cumplan EXACTAMENTE esta estructura y nombres de campos:
+OUTPUT FORMAT (strict JSON)
+Return an array of objects with EXACT field names and structure:
 [
   {
     "domain": "{DOMAIN}",
@@ -48,40 +51,10 @@ Devuélveme un ARRAY JSON con objetos que cumplan EXACTAMENTE esta estructura y 
     "stem": { "en": "...", "es": "..." },
     "explanation": { "en": "...", "es": "..." },
     "options": [
-      {
-        "label": "A",
-        "text": { "en": "...", "es": "..." },
-        "isCorrect": true
-      }
+      { "label": "A", "text": { "en": "...", "es": "..." }, "isCorrect": true }
     ],
-    "tags": ["tag1","tag2","tag3"]
+    "tags": ["tag-one","tag-two","tag-three"]
   }
 ]
 
-REGLAS DE VALIDACIÓN (no falles esto):
-- SINGLE/YESNO: exactamente 1 opción con isCorrect=true.
-- MULTI: exactamente 2 o 3 opciones con isCorrect=true.
-- No dejes campos vacíos.
-- Mantén consistencia EN/ES (misma intención; traducción correcta).
-- Usa UTF-8 (acentos correctos en español).
-- tags en minúscula con guiones (ej: "rbac", "nsg-outbound", "storage-sas", "log-analytics").
-
-SUGERENCIA DE SUBTEMAS por dominio (usa para tags y variedad):
-IDENTITY_GOVERNANCE:
-  rbac, scope, management-groups, azure-policy, locks, tags, entra-users-groups, pim, conditional-access (conceptual)
-STORAGE:
-  storage-account, replication-lrs-zrs-grs, access-tiers, lifecycle-management, sas, storage-firewall, private-endpoint, service-endpoint, azure-files, blob-versioning
-COMPUTE:
-  vm-resize, vm-images, snapshots, managed-disks, availability-zones, availability-sets, vmss, app-service-basics, container-basics
-NETWORKING:
-  vnet-subnet, nsg, udr, peering, dns-private-zone, load-balancer, application-gateway (conceptual), vpn-gateway, expressroute (conceptual)
-MONITOR_MAINTAIN:
-  azure-monitor, metrics-logs, log-analytics, alerts-action-groups, diagnostic-settings, backup-basics, update-management (conceptual)
-
-SALIDA FINAL:
-- Entrega SOLO JSON válido (sin texto adicional).
-- Si detectas que no puedes generar {N} por límite de salida, entonces:
-  1) entrega JSON con 50 preguntas como muestra
-  2) y entrega un script local (Java/Kotlin o Python) que genere el resto hasta {N} siguiendo las mismas reglas y estructura.
-- No generes readme.md de la implementacion o proceso de generacion de las preguntas
-- El contenido que generes debe ser un archivo json descargable
+Generate now N={N} for DOMAIN={DOMAIN}. Ensure uniqueness and anti-guessing rules are satisfied.

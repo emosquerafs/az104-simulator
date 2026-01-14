@@ -18,7 +18,7 @@
             </div>
 
             <div class="header-center" th:if="${attempt.mode.name() == 'EXAM' && config.timeLimitMinutes != null}">
-                <div class="timer" id="timer" th:attr="data-time-limit=${config.timeLimitMinutes * 60}">
+                <div class="timer" id="timer">
                     <span id="timer-display">--:--</span>
                 </div>
             </div>
@@ -148,7 +148,7 @@
         const questionId = /*[[${question.id}]]*/ 0;
         const currentIndex = /*[[${currentIndex}]]*/ 0;
         let isMarked = /*[[${question.marked}]]*/ false;
-        const timeLimitSeconds = /*[[${config.timeLimitMinutes != null ? config.timeLimitMinutes * 60 : 0}]]*/ 0;
+        const remainingSeconds = /*[[${remainingSeconds != null ? remainingSeconds : 0}]]*/ 0;
 
         let timerInterval;
         let isSaving = false;
@@ -175,27 +175,27 @@
             });
         }
 
-        // Initialize timer
-        if (timeLimitSeconds > 0) {
-            let remainingSeconds = timeLimitSeconds;
+        // Initialize timer with remaining time from server
+        if (remainingSeconds > 0) {
+            let timeLeft = remainingSeconds;
             const timerDisplay = document.getElementById('timer-display');
 
             function updateTimer() {
-                const minutes = Math.floor(remainingSeconds / 60);
-                const seconds = remainingSeconds % 60;
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
                 timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
-                if (remainingSeconds <= 300) {
+                if (timeLeft <= 300) {
                     timerDisplay.classList.add('warning');
                 }
 
-                if (remainingSeconds <= 0) {
+                if (timeLeft <= 0) {
                     clearInterval(timerInterval);
                     alert('Time is up! The exam will now be submitted.');
                     submitExam();
                 }
 
-                remainingSeconds--;
+                timeLeft--;
             }
 
             updateTimer();
