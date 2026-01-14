@@ -417,32 +417,32 @@ sequenceDiagram
     Browser->>LocaleController: GET /locale/change?lang=en&redirect=/config
     
     LocaleController->>LocaleController: Parse locale "en"
-    LocaleController->>LocaleController: Set cookie "lang=en" (max-age=1 year)
+    LocaleController->>LocaleController: Set cookie lang=en (max-age 1 year)
     LocaleController->>LocaleController: LocaleContextHolder.setLocale(Locale.EN)
-    LocaleController-->>Browser: Set-Cookie: lang=en; Path=/; Max-Age=31536000
+    LocaleController-->>Browser: Set-Cookie header with lang=en
     LocaleController-->>Browser: Redirect to /config
     
     Browser->>Browser: Store cookie
     Browser->>LocaleController: GET /config
-    Note over Browser: Cookie sent: lang=en
+    Note over Browser: Cookie sent with request
     
     LocaleInterceptor->>LocaleInterceptor: preHandle(request)
-    LocaleInterceptor->>LocaleInterceptor: Read cookie "lang"
-    LocaleInterceptor->>LocaleInterceptor: LocaleContextHolder.setLocale(Locale.EN)
+    LocaleInterceptor->>LocaleInterceptor: Read cookie lang value
+    LocaleInterceptor->>LocaleInterceptor: Set locale to EN
     
-    LocaleController->>MessageSource: getMessage("config.title", Locale.EN)
+    LocaleController->>MessageSource: getMessage for config.title in EN
     MessageSource->>MessageSource: Load messages_en.properties
-    MessageSource-->>LocaleController: "Configure Your"
+    MessageSource-->>LocaleController: Return "Configure Your"
     
     alt Rendering question content
-        LocaleController->>QuestionService: toDto(questionId, lang="en")
+        LocaleController->>QuestionService: toDto with lang EN
         QuestionService->>QuestionService: Select stem_en, explanation_en, text_en
         QuestionService-->>LocaleController: QuestionDto (English content)
     end
     
     LocaleController-->>Browser: Render page in English
     
-    Note over Browser: All UI labels from messages_en.properties<br/>All question content from *_en columns
+    Note over Browser: All UI labels from messages_en.properties<br/>All question content from EN columns
 ```
 
 ---
