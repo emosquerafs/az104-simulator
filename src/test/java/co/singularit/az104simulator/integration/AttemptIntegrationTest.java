@@ -98,7 +98,7 @@ class AttemptIntegrationTest {
         ExamConfigDto config = createExamConfig(ExamMode.EXAM, requestedQuestions);
 
         // Act
-        Attempt attempt = attemptService.createAttempt(config);
+        Attempt attempt = attemptService.createAttempt(config, UUID.randomUUID().toString());
 
         // Assert
         assertThat(attempt).isNotNull();
@@ -144,7 +144,7 @@ class AttemptIntegrationTest {
         int numberOfCalls = 20;
 
         ExamConfigDto config = createExamConfig(ExamMode.EXAM, requestedQuestions);
-        Attempt attempt = attemptService.createAttempt(config);
+        Attempt attempt = attemptService.createAttempt(config, UUID.randomUUID().toString());
 
         // Act - Call the same method 20 times with the same index
         Set<Long> returnedQuestionIds = new HashSet<>();
@@ -176,7 +176,7 @@ class AttemptIntegrationTest {
         // Arrange
         int requestedQuestions = 10;
         ExamConfigDto config = createExamConfig(ExamMode.PRACTICE, requestedQuestions);
-        Attempt attempt = attemptService.createAttempt(config);
+        Attempt attempt = attemptService.createAttempt(config, UUID.randomUUID().toString());
 
         // Act - Get questions at different indexes
         Map<Integer, Long> indexToQuestionId = new HashMap<>();
@@ -263,7 +263,7 @@ class AttemptIntegrationTest {
     void getQuestionIds_ShouldReturnQuestionsInStablePositionOrder() {
         // Arrange
         ExamConfigDto config = createExamConfig(ExamMode.EXAM, 10);
-        Attempt attempt = attemptService.createAttempt(config);
+        Attempt attempt = attemptService.createAttempt(config, UUID.randomUUID().toString());
 
         // Act - Call multiple times
         List<Long> firstCall = attemptService.getQuestionIds(attempt.getId());
@@ -283,7 +283,7 @@ class AttemptIntegrationTest {
     void getQuestionStates_ShouldReturnStatesInPositionOrder() {
         // Arrange
         ExamConfigDto config = createExamConfig(ExamMode.PRACTICE, 5);
-        Attempt attempt = attemptService.createAttempt(config);
+        Attempt attempt = attemptService.createAttempt(config, UUID.randomUUID().toString());
 
         // Act - Call multiple times
         List<String> firstCall = attemptService.getQuestionStates(attempt.getId());
@@ -306,7 +306,7 @@ class AttemptIntegrationTest {
         ExamConfigDto config = createExamConfig(ExamMode.PRACTICE, requestedQuestions);
 
         // Act
-        Attempt attempt = attemptService.createAttempt(config);
+        Attempt attempt = attemptService.createAttempt(config, UUID.randomUUID().toString());
 
         // Assert
         assertThat(attempt.getMode()).isEqualTo(ExamMode.PRACTICE);
@@ -327,7 +327,7 @@ class AttemptIntegrationTest {
         // Arrange
         int requestedQuestions = 10;
         ExamConfigDto config = createExamConfig(ExamMode.EXAM, requestedQuestions);
-        Attempt attempt = attemptService.createAttempt(config);
+        Attempt attempt = attemptService.createAttempt(config, UUID.randomUUID().toString());
 
         // Act
         var results = attemptService.completeAttempt(attempt.getId());

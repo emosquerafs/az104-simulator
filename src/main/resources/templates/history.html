@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{history.title}">My Attempts</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .history-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .filter-controls select {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .attempts-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .attempt-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 1.5rem;
+            align-items: center;
+            transition: box-shadow 0.2s;
+        }
+
+        .attempt-card:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .attempt-mode {
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            min-width: 80px;
+        }
+
+        .attempt-mode.EXAM {
+            color: #dc3545;
+        }
+
+        .attempt-mode.PRACTICE {
+            color: #28a745;
+        }
+
+        .attempt-info {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .attempt-meta {
+            display: flex;
+            gap: 1.5rem;
+            color: #666;
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        .attempt-stats {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 1rem;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+        }
+
+        .stat-value {
+            font-weight: bold;
+        }
+
+        .stat-value.correct {
+            color: #28a745;
+        }
+
+        .stat-value.incorrect {
+            color: #dc3545;
+        }
+
+        .stat-value.unanswered {
+            color: #6c757d;
+        }
+
+        .score-badge {
+            font-size: 2rem;
+            font-weight: bold;
+            padding: 1rem;
+            border-radius: 8px;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .score-badge.excellent {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .score-badge.good {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .score-badge.fair {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .score-badge.poor {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .view-btn {
+            padding: 0.75rem 1.5rem;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 1rem;
+        }
+
+        .view-btn:hover {
+            background: #0056b3;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="history-container">
+        <a href="/" class="back-link" th:text="#{history.back}">← Back to Home</a>
+
+        <div class="history-header">
+            <h1 th:text="#{history.title}">My Attempts</h1>
+
+            <div class="filter-controls">
+                <label th:text="#{history.filters.mode} + ':'">Mode:</label>
+                <select id="modeFilter" onchange="filterByMode(this.value)">
+                    <option value="ALL" th:selected="${selectedMode == 'ALL'}" th:text="#{history.filters.all}">All</option>
+                    <option value="EXAM" th:selected="${selectedMode == 'EXAM'}" th:text="#{history.filters.exam}">Exam</option>
+                    <option value="PRACTICE" th:selected="${selectedMode == 'PRACTICE'}" th:text="#{history.filters.practice}">Practice</option>
+                </select>
+
+                <select id="langSelector" onchange="changeLang(this.value)">
+                    <option value="es" th:selected="${#locale.language == 'es'}">Español</option>
+                    <option value="en" th:selected="${#locale.language == 'en'}">English</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="attempts-list" th:if="${!attempts.isEmpty()}">
+            <div class="attempt-card" th:each="attempt : ${attempts}">
+                <div class="attempt-mode" th:classappend="${attempt.mode.name()}" th:text="${attempt.mode}">EXAM</div>
+
+                <div class="attempt-info">
+                    <div class="attempt-meta">
+                        <span>
+                            <strong th:text="#{history.table.date} + ':'">Date:</strong>
+                            <span th:text="${#temporals.format(attempt.startedAt, 'yyyy-MM-dd HH:mm')}">2024-01-01 10:00</span>
+                        </span>
+                        <span>
+                            <strong th:text="#{history.table.duration} + ':'">Duration:</strong>
+                            <span th:text="${attempt.formattedDuration}">45:30</span>
+                        </span>
+                        <span>
+                            <strong th:text="#{history.table.questions} + ':'">Questions:</strong>
+                            <span th:text="${attempt.totalQuestions}">50</span>
+                        </span>
+                    </div>
+
+                    <div class="attempt-stats">
+                        <div class="stat-item">
+                            <span class="stat-label" th:text="#{history.stats.correct} + ':'">Correct:</span>
+                            <span class="stat-value correct" th:text="${attempt.correctCount}">35</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label" th:text="#{history.stats.incorrect} + ':'">Incorrect:</span>
+                            <span class="stat-value incorrect" th:text="${attempt.incorrectCount}">10</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label" th:text="#{history.stats.unanswered} + ':'">Unanswered:</span>
+                            <span class="stat-value unanswered" th:text="${attempt.unansweredCount}">5</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+                    <div class="score-badge"
+                         th:classappend="${attempt.scorePercentage >= 80 ? 'excellent' : (attempt.scorePercentage >= 60 ? 'good' : (attempt.scorePercentage >= 40 ? 'fair' : 'poor'))}">
+                        <span th:text="${attempt.scorePercentage + '%'}">70%</span>
+                    </div>
+                    <a th:href="@{/history/{id}(id=${attempt.id})}"
+                       class="view-btn"
+                       th:text="#{history.viewDetails}">View Details</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="empty-state" th:if="${attempts.isEmpty()}">
+            <div class="empty-state-icon">📝</div>
+            <h2 th:text="#{history.empty.title}">No Attempts Yet</h2>
+            <p th:text="#{history.empty.message}">You haven't completed any attempts yet. Start practicing to see your history here!</p>
+            <a href="/" class="view-btn" th:text="#{history.empty.action}">Start Practice</a>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        function filterByMode(mode) {
+            const url = new URL(window.location.href);
+            if (mode === 'ALL') {
+                url.searchParams.delete('mode');
+            } else {
+                url.searchParams.set('mode', mode);
+            }
+            window.location.href = url.toString();
+        }
+
+        function changeLang(lang) {
+            const url = new URL(window.location.href);
+            url.searchParams.set('lang', lang);
+            window.location.href = url.toString();
+        }
+    </script>
+</body>
+</html>

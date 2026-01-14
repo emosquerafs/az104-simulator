@@ -33,10 +33,11 @@ public class AttemptService {
     private final ExamSessionService examSessionService;
 
     @Transactional
-    public Attempt createAttempt(ExamConfigDto config) {
+    public Attempt createAttempt(ExamConfigDto config, String studentId) {
         Attempt attempt = new Attempt();
         attempt.setMode(config.getMode());
         attempt.setStartedAt(LocalDateTime.now());
+        attempt.setStudentId(studentId);
 
         List<Domain> domains = config.getSelectedDomains();
         if (domains == null || domains.isEmpty()) {
@@ -246,11 +247,17 @@ public class AttemptService {
             attempt.setDurationSeconds((int) seconds);
         }
 
-        attemptRepository.save(attempt);
-
         // Use ordered retrieval for consistent results
         List<AttemptAnswer> answers = attemptAnswerRepository.findByAttemptOrderByPositionAsc(attempt);
-        return scoringService.calculateResults(attempt, answers);
+        ResultDto results = scoringService.calculateResults(attempt, answers);
+
+        // Calculate and store score percentage
+        int scorePercentage = Math.round((results.getCorrectAnswers() * 100.0f) / attempt.getTotalQuestions());
+        attempt.setScorePercentage(scorePercentage);
+
+        attemptRepository.save(attempt);
+
+        return results;
     }
 
     @Transactional(readOnly = true)

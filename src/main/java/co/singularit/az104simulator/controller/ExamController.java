@@ -5,6 +5,9 @@ import co.singularit.az104simulator.domain.Domain;
 import co.singularit.az104simulator.domain.ExamMode;
 import co.singularit.az104simulator.dto.*;
 import co.singularit.az104simulator.service.AttemptService;
+import co.singularit.az104simulator.service.StudentIdentityService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -23,10 +26,17 @@ import java.util.Map;
 public class ExamController {
 
     private final AttemptService attemptService;
+    private final StudentIdentityService studentIdentityService;
 
     @PostMapping("/start")
-    public String startAttempt(@ModelAttribute ExamConfigDto config) {
+    public String startAttempt(
+            @ModelAttribute ExamConfigDto config,
+            HttpServletRequest request,
+            HttpServletResponse response) {
         log.info("Starting attempt with config: mode={}, questions={}", config.getMode(), config.getNumberOfQuestions());
+
+        // Get or create student ID
+        String studentId = studentIdentityService.getOrCreateStudentId(request, response);
 
         // Validate and set defaults
         if (config.getSelectedDomains() == null || config.getSelectedDomains().isEmpty()) {
@@ -37,7 +47,7 @@ public class ExamController {
             config.setMode(ExamMode.PRACTICE);
         }
 
-        Attempt attempt = attemptService.createAttempt(config);
+        Attempt attempt = attemptService.createAttempt(config, studentId);
         return "redirect:/attempt/" + attempt.getId() + "/question/0";
     }
 

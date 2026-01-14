@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{attempt.detail.title}">Attempt Review</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .detail-container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .detail-header {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .header-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 1rem;
+            border-radius: 4px;
+            background: #f8f9fa;
+        }
+
+        .stat-box-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-box-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .detail-body {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 2rem;
+        }
+
+        .questions-sidebar {
+            position: sticky;
+            top: 2rem;
+            align-self: start;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            max-height: calc(100vh - 4rem);
+            overflow-y: auto;
+        }
+
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .question-number-btn {
+            aspect-ratio: 1;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .question-number-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .question-number-btn.active {
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.2);
+        }
+
+        .question-number-btn.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .question-number-btn.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .question-number-btn.unanswered {
+            background: #e9ecef;
+            border-color: #6c757d;
+            color: #495057;
+        }
+
+        .question-number-btn.marked::after {
+            content: '🔖';
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            font-size: 0.8rem;
+        }
+
+        .legend {
+            border-top: 1px solid #ddd;
+            padding-top: 1rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .legend-box {
+            width: 24px;
+            height: 24px;
+            border: 2px solid;
+            border-radius: 4px;
+        }
+
+        .legend-box.correct {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        .legend-box.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+
+        .legend-box.unanswered {
+            background: #e9ecef;
+            border-color: #6c757d;
+        }
+
+        .question-panel {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .question-panel.active {
+            display: block;
+        }
+
+        .question-header {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .domain-badge, .difficulty-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .domain-badge {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .difficulty-badge {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .difficulty-badge.EASY {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+
+        .difficulty-badge.MEDIUM {
+            background: #fff9c4;
+            color: #f57f17;
+        }
+
+        .difficulty-badge.HARD {
+            background: #ffccbc;
+            color: #d84315;
+        }
+
+        .question-stem {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+        }
+
+        .options-list {
+            margin-bottom: 2rem;
+        }
+
+        .option-item {
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+        }
+
+        .option-item.selected {
+            border-color: #007bff;
+            background: #e7f3ff;
+        }
+
+        .option-item.correct {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+
+        .option-item.selected.incorrect {
+            border-color: #dc3545;
+            background: #f8d7da;
+        }
+
+        .option-icon {
+            font-size: 1.5rem;
+            min-width: 24px;
+        }
+
+        .option-label {
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .explanation-box {
+            background: #e7f3ff;
+            border-left: 4px solid #007bff;
+            padding: 1.5rem;
+            border-radius: 4px;
+            margin-top: 2rem;
+        }
+
+        .explanation-box h4 {
+            margin-top: 0;
+            color: #007bff;
+        }
+
+        .result-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .result-badge.correct {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .result-badge.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .result-badge.unanswered {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .detail-body {
+                grid-template-columns: 1fr;
+            }
+
+            .questions-sidebar {
+                position: static;
+                max-height: none;
+            }
+
+            .questions-grid {
+                grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="detail-container">
+        <a th:href="@{/history}" class="back-link" th:text="#{attempt.detail.back}">← Back to History</a>
+
+        <div class="detail-header">
+            <div class="header-top">
+                <div>
+                    <h1 th:text="#{attempt.detail.title}">Attempt Review</h1>
+                    <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+                        <span class="domain-badge" th:text="${summary.mode}">EXAM</span>
+                        <span th:text="#{attempt.detail.completed} + ': ' + ${#temporals.format(summary.completedAt, 'yyyy-MM-dd HH:mm')}">
+                            Completed: 2024-01-01 10:00
+                        </span>
+                    </div>
+                </div>
+
+                <select id="langSelector" onchange="changeLang(this.value)">
+                    <option value="es" th:selected="${currentLang == 'es'}">Español</option>
+                    <option value="en" th:selected="${currentLang == 'en'}">English</option>
+                </select>
+            </div>
+
+            <div class="header-stats">
+                <div class="stat-box">
+                    <div class="stat-box-label" th:text="#{attempt.summary.score}">Score</div>
+                    <div class="stat-box-value" th:text="${summary.scorePercentage + '%'}">70%</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-box-label" th:text="#{attempt.summary.correct}">Correct</div>
+                    <div class="stat-box-value" style="color: #28a745;" th:text="${summary.correctCount}">35</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-box-label" th:text="#{attempt.summary.incorrect}">Incorrect</div>
+                    <div class="stat-box-value" style="color: #dc3545;" th:text="${summary.incorrectCount}">10</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-box-label" th:text="#{attempt.summary.unanswered}">Unanswered</div>
+                    <div class="stat-box-value" style="color: #6c757d;" th:text="${summary.unansweredCount}">5</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-box-label" th:text="#{attempt.summary.duration}">Duration</div>
+                    <div class="stat-box-value" th:text="${summary.formattedDuration}">45:30</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-body">
+            <div class="questions-sidebar">
+                <h3 th:text="#{attempt.detail.questions}">Questions</h3>
+
+                <div class="questions-grid">
+                    <button th:each="entry : ${questions}"
+                            type="button"
+                            class="question-number-btn"
+                            th:classappend="${entry.value.isAnswered ? (entry.value.isCorrect ? 'correct' : 'incorrect') : 'unanswered'} + (${entry.value.marked} ? ' marked' : '')"
+                            th:attr="data-question=${entry.key}"
+                            th:text="${entry.key}"
+                            onclick="showQuestion(this.dataset.question)">
+                        1
+                    </button>
+                </div>
+
+                <div class="legend">
+                    <h4 th:text="#{attempt.detail.legend}">Legend:</h4>
+                    <div class="legend-item">
+                        <span class="legend-box correct"></span>
+                        <span th:text="#{attempt.question.correct}">Correct</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-box incorrect"></span>
+                        <span th:text="#{attempt.question.incorrect}">Incorrect</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-box unanswered"></span>
+                        <span th:text="#{attempt.question.unanswered}">Not Answered</span>
+                    </div>
+                    <div class="legend-item">
+                        <span>🔖</span>
+                        <span th:text="#{attempt.question.marked}">Marked for Review</span>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div th:each="entry : ${questions}"
+                     class="question-panel"
+                     th:id="'question-' + ${entry.key}"
+                     th:attr="data-question=${entry.key}">
+
+                    <div th:with="q=${entry.value}">
+                        <div class="question-header">
+                            <span class="domain-badge" th:text="${q.domain.displayName}">Domain</span>
+                            <span class="difficulty-badge" th:classappend="${q.difficulty.name()}" th:text="${q.difficulty}">Medium</span>
+                            <span class="result-badge"
+                                  th:classappend="${q.isAnswered ? (q.isCorrect ? 'correct' : 'incorrect') : 'unanswered'}">
+                                <span th:if="${q.isAnswered && q.isCorrect}" th:text="#{attempt.question.correct}">✓ Correct</span>
+                                <span th:if="${q.isAnswered && !q.isCorrect}" th:text="#{attempt.question.incorrect}">✗ Incorrect</span>
+                                <span th:if="${!q.isAnswered}" th:text="#{attempt.question.unanswered}">Not Answered</span>
+                            </span>
+                        </div>
+
+                        <h2 style="margin-bottom: 0.5rem;">
+                            <span th:text="#{attempt.detail.question} + ' ' + ${entry.key}">Question 1</span>
+                        </h2>
+
+                        <div class="question-stem" th:utext="${q.stem}">Question text goes here</div>
+
+                        <div class="options-list">
+                            <div th:each="option : ${q.options}"
+                                 class="option-item"
+                                 th:classappend="${option.isSelected ? 'selected' : ''} + (${option.isCorrect} ? ' correct' : (${option.isSelected} ? ' incorrect' : ''))">
+
+                                <span class="option-icon">
+                                    <span th:if="${option.isCorrect}">✓</span>
+                                    <span th:if="${option.isSelected && !option.isCorrect}">✗</span>
+                                </span>
+
+                                <div style="flex: 1;">
+                                    <span class="option-label" th:text="${option.label}">A</span>
+                                    <span th:text="${option.text}">Option text</span>
+
+                                    <div style="margin-top: 0.5rem; font-size: 0.9rem;">
+                                        <span th:if="${option.isCorrect}" style="color: #28a745; font-weight: bold;" th:text="'(' + #{attempt.option.correct} + ')'">
+                                            (Correct Answer)
+                                        </span>
+                                        <span th:if="${option.isSelected}" style="color: #007bff; font-weight: bold;" th:text="'(' + #{attempt.option.selected} + ')'">
+                                            (Your Answer)
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="explanation-box" th:if="${q.explanation}">
+                            <h4 th:text="#{attempt.explanation}">Explanation</h4>
+                            <p th:text="${q.explanation}">Explanation text goes here</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        const attemptId = /*[[${attemptId}]]*/ '';
+
+        function showQuestion(questionNum) {
+            // Hide all panels
+            document.querySelectorAll('.question-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+
+            // Show selected panel
+            document.getElementById('question-' + questionNum).classList.add('active');
+
+            // Update button states
+            document.querySelectorAll('.question-number-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-question="${questionNum}"]`).classList.add('active');
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function changeLang(lang) {
+            const url = new URL(window.location.href);
+            url.searchParams.set('lang', lang);
+            window.location.href = url.toString();
+        }
+
+        // Show first question on load
+        document.addEventListener('DOMContentLoaded', function() {
+            showQuestion(1);
+        });
+    </script>
+</body>
+</html>

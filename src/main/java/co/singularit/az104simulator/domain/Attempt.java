@@ -41,6 +41,12 @@ public class Attempt {
     @Column(name = "session_id", length = 36)
     private String sessionId;
 
+    @Column(name = "student_id", length = 36)
+    private String studentId;
+
+    @Column(name = "score_percentage")
+    private Integer scorePercentage;
+
     @OneToMany(mappedBy = "attempt", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("position ASC")
     private List<AttemptAnswer> answers = new ArrayList<>();

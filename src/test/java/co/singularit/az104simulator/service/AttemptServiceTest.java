@@ -101,7 +101,7 @@ class AttemptServiceTest {
             });
 
         // Act
-        Attempt attempt = attemptService.createAttempt(config);
+        Attempt attempt = attemptService.createAttempt(config, UUID.randomUUID().toString());
 
         // Assert
         assertThat(attempt).isNotNull();
@@ -231,7 +231,7 @@ class AttemptServiceTest {
             });
 
         // Act & Assert
-        assertThatThrownBy(() -> attemptService.createAttempt(config))
+        assertThatThrownBy(() -> attemptService.createAttempt(config, UUID.randomUUID().toString()))
             .isInstanceOf(IllegalStateException.class)
             .hasMessageContaining("Duplicate questions detected");
 
