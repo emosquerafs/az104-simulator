@@ -1,0 +1,79 @@
+# =============================================================================
+# .dockerignore - Exclude unnecessary files from Docker build context
+# =============================================================================
+
+# Git files
+.git
+.gitignore
+.gitattributes
+
+# Build outputs and caches
+build/
+target/
+out/
+bin/
+.gradle/
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# IDE and editor files
+.vscode/
+.settings/
+.classpath
+.project
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Logs and temporary files
+*.log
+app.log
+logs/
+*.tmp
+*.temp
+
+# Test files
+src/test/
+**/test-results/
+
+# Documentation
+README.md
+CHANGELOG.md
+docs/
+*.md
+
+# CI/CD files
+.github/
+.gitlab-ci.yml
+Jenkinsfile
+azure-pipelines.yml
+
+# Docker files (avoid recursive copy)
+Dockerfile*
+.dockerignore
+docker-compose*.yml
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Secrets and environment files
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.crt
+secrets/
+
+# Generated seed data or test data (if not needed in container)
+# Uncomment if you don't need seed data in production
+# src/main/resources/seed/
+
+# Gradle wrapper JAR (we copy it explicitly)
+# Keep this commented to allow wrapper
+# gradle/wrapper/gradle-wrapper.jar
+
