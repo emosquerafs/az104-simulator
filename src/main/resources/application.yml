@@ -3,10 +3,10 @@ spring:
     name: az104-simulator
 
   datasource:
-    url: jdbc:h2:mem:az104db
+    url: ${SPRING_DATASOURCE_URL:jdbc:h2:file:/app/data/az104db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE}
     driver-class-name: org.h2.Driver
-    username: sa
-    password:
+    username: ${SPRING_DATASOURCE_USERNAME:sa}
+    password: ${SPRING_DATASOURCE_PASSWORD:}
 
   h2:
     console:

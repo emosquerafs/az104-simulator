@@ -105,36 +105,87 @@ curl http://localhost:8080
 
 ## 🗄️ H2 Database Modes
 
-### In-Memory (Actual configuración)
+### File Mode (Configuración por defecto - Persistente)
+
+**⚠️ ACTUALIZACIÓN:** La aplicación ahora usa H2 en modo archivo por defecto para persistencia de datos.
+
 ```yaml
 spring:
   datasource:
-    url: jdbc:h2:mem:az104db
-```
-No requiere volúmenes persistentes. Los datos se pierden al reiniciar.
-
-### File Mode (Para persistencia)
-```yaml
-spring:
-  datasource:
-    url: jdbc:h2:file:/app/data/az104db
+    url: ${SPRING_DATASOURCE_URL:jdbc:h2:file:/app/data/az104db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE}
 ```
 
-Si cambias a file mode, usa:
+**Uso con named volume (recomendado):**
 ```bash
-# Crear volumen
-docker volume create az104-data
-
-# Ejecutar con volumen
 docker run -d \
   --name az104-simulator \
   -p 8080:8080 \
-  -v az104-data:/app/data \
-  --tmpfs /tmp-app:mode=1777,size=104857600 \
-  az104-simulator:latest
+  -v az104_data:/app/data \
+  singularitsas/az104-exam-simulator:1.0.0
 ```
 
-O descomenta la sección de volumes en `docker-compose.yml`.
+**Con Docker Compose:**
+```bash
+docker-compose up -d
+# El volumen az104_data se crea automáticamente
+```
+
+**Ventajas:**
+- ✅ Los exámenes y respuestas persisten entre reinicios
+- ✅ Puedes detener y reiniciar el contenedor sin perder progreso
+- ✅ Ideal para uso real del simulador
+
+### In-Memory Mode (Para testing o demos)
+
+Si prefieres modo volátil (datos se borran al reiniciar):
+
+```bash
+docker run -d \
+  --name az104-simulator \
+  -p 8080:8080 \
+  -e SPRING_DATASOURCE_URL="jdbc:h2:mem:az104db" \
+  singularitsas/az104-exam-simulator:1.0.0
+```
+
+**Ventajas:**
+- ✅ No requiere volúmenes
+- ✅ Útil para demos o testing
+- ✅ Cada reinicio es una BD limpia
+
+### Acceso a H2 Console
+
+- **URL**: http://localhost:8080/h2-console
+- **JDBC URL (file mode)**: `jdbc:h2:file:/app/data/az104db`
+- **JDBC URL (memory mode)**: `jdbc:h2:mem:az104db`
+- **Username**: `sa`
+- **Password**: (vacío)
+
+### Gestión de Volúmenes
+
+```bash
+# Listar volúmenes
+docker volume ls
+
+# Inspeccionar volumen
+docker volume inspect az104_data
+
+# Backup de la base de datos
+docker run --rm \
+  -v az104_data:/source:ro \
+  -v $(pwd):/backup \
+  alpine tar -czf /backup/az104-backup-$(date +%Y%m%d).tar.gz -C /source .
+
+# Restaurar backup
+docker run --rm \
+  -v az104_data:/target \
+  -v $(pwd):/backup \
+  alpine tar -xzf /backup/az104-backup-20260116.tar.gz -C /target
+
+# Eliminar volumen (⚠️ borra todos los datos)
+docker-compose down -v
+# o
+docker volume rm az104_data
+```
 
 ## 🔐 Seguridad Avanzada
 
@@ -248,7 +299,77 @@ docker inspect az104-simulator | grep -A 10 Health
 ```
 
 ### Problemas de permisos
-Verifica que los directorios `/tmp-app` y `/app/data` estén montados correctamente con tmpfs o volúmenes.
+
+#### ❌ Error: `AccessDeniedException` en `/data` o `/app/data`
+
+**Síntoma:**
+```
+org.h2.message.DbException: Log file error: "/data/az104db.trace.db", 
+cause: "java.nio.file.AccessDeniedException: /data/az104db.trace.db"
+```
+
+**Causa:**  
+El contenedor corre con usuario no-root (UID 1001) y no tiene permisos de escritura en el volumen montado.
+
+**Solución 1: Usar named volumes (recomendado)**
+```bash
+# Docker maneja automáticamente los permisos
+docker volume create az104_data
+
+docker run -d \
+  --name az104-simulator \
+  -p 8080:8080 \
+  -e SPRING_DATASOURCE_URL="jdbc:h2:file:/app/data/az104db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE" \
+  -v az104_data:/app/data \
+  singularitsas/az104-exam-simulator:1.0.0
+```
+
+**Solución 2: Bind mount con permisos correctos**
+```bash
+# Crear directorio y asignar permisos al UID del contenedor
+mkdir -p ./data
+sudo chown -R 1001:1001 ./data
+chmod 755 ./data
+
+# Ejecutar con bind mount
+docker run -d \
+  --name az104-simulator \
+  -p 8080:8080 \
+  -e SPRING_DATASOURCE_URL="jdbc:h2:file:/app/data/az104db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE" \
+  -v $(pwd)/data:/app/data \
+  singularitsas/az104-exam-simulator:1.0.0
+```
+
+**Solución 3: Usar Docker Compose (más simple)**
+```bash
+# docker-compose.yml ya tiene la configuración correcta
+docker-compose up -d
+```
+
+#### ⚠️ Importante: Path del volumen
+
+El Dockerfile declara `VOLUME ["/tmp-app", "/app/data"]`.  
+**Siempre monta volúmenes en `/app/data`, NO en `/data`:**
+
+```bash
+# ✅ CORRECTO
+-v az104_data:/app/data
+
+# ❌ INCORRECTO (causa permission denied)
+-v az104_data:/data
+```
+
+#### Verificar permisos dentro del contenedor
+
+```bash
+# Ver usuario y permisos
+docker exec az104-simulator id
+# Output esperado: uid=1001(appuser) gid=1001(appgroup)
+
+# Ver permisos del directorio
+docker exec az104-simulator ls -la /app/data
+# Debe mostrar: drwxr-xr-x appuser appgroup
+```
 
 ### Out of Memory
 Ajusta los límites de memoria:

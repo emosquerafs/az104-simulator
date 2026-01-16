@@ -44,7 +44,7 @@ LABEL maintainer="SingularIT" \
       org.opencontainers.image.source="https://github.com/singularit/az104simulator"
 
 # Install runtime dependencies for healthcheck and security
-# Note: Using latest stable versions from Alpine repos (versions pinned in base image tag)
+# Note: Using latest stable versions from Alpine repos
 RUN apk add --no-cache \
     curl \
     tini && \
